@@ -10,7 +10,7 @@ var connection = mySQL.createConnection({
 });
 
 connection.connect(function(error) {
-  if(!!error) {
+  if(error) {
     console.log('Error');
   } else {
     console.log('Connection');
@@ -37,4 +37,5 @@ app.post('/signup', function(req, resp) {
     }
   });
 });
+
 app.listen(1337);
