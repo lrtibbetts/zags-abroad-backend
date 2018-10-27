@@ -38,4 +38,6 @@ app.post('/signup', function(req, resp) {
   });
 });
 
-app.listen(1337);
+app.listen(port, function() {
+    console.log('Hit it');
+});
