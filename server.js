@@ -1,6 +1,8 @@
 var express = require('express');
 var mySQL = require('mysql');
 var app = express();
+var cors = require('cors');
+app.use(cors());
 
 var port = process.env.PORT || 3000;
 var connection = mySQL.createConnection({
@@ -40,27 +42,21 @@ app.post('/signup', function(req, res) {
   });
 });
 
-// app.get('/login', function(req, res) {
-//     var email = "Luy@gmail.com";//req.email;
-//     var password = "TimBits"; //req.password;
-//     connection.query("SELECT email, password FROM accounts WHERE email = ? AND password = ?", [email, password], function (error, result, fields) {
-//       if(error) {
-//         console.log("Error retreviving user");
-//         exist(error)
-//       } else if(result.length > 0) {
-//         res.send(result);
-//         exist(null,result);
-//       } else {
-//         exist
-//       }
-//     });
-// });
-
-// function exist(error, result) {
-//   if(result) {
-//     console.log("Result:" + result);
-//   }
-// }
+app.get('/login', function(req, res) {
+    var email = "Luy@gmail.com";//req.email;
+    var password = "TimBits"; //req.password;
+    connection.query("SELECT email, password FROM accounts WHERE email = ? AND password = ?", [email, password], function (error, results, fields) {
+      if(error) {
+        console.log("Error retreviving user");
+      } else if(results.length > 0) {
+        if(results) {
+          res.send("Result: " + results);
+        }
+      } else {
+        res.send("no such user exists");
+      }
+    });
+});
 
 app.listen(port, function() {
     console.log('Hit it');
