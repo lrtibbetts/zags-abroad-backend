@@ -1,10 +1,13 @@
 //Declaring dependencies that will be used to run 'post' and 'get' requests
 var express = require('express');
 var mySQL = require('mysql');
+var bodyParser - require('body-parser');
 var cors = require('cors');
 
 //Declares that we are using an express object
 var app = express();
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 app.use(cors());
 
 //Port determined by Heroku,else Default as localhost:3000
@@ -33,10 +36,10 @@ connection.connect(function(error) {
 //Querys db using this data
 //If the use does not exist, then insert into the database
 app.post('/signup', function(req, res) {
-  var email = JSON.stringify(req.email);
-  var first = JSON.stringify(req.first);
-  var last = JSON.stringify(req.last);
-  var password = JSON.stringify(req.password);
+  var email = req.body.email;
+  var first = req.body.first;
+  var last = req.body.last;
+  var password = req.body.password;
   var admin = 0;
   connection.query("INSERT INTO accounts (email, first_name, last_name, password, is_admin) VALUES (?,?,?,?,?)", [email, first, last, password, admin], function(error, results, fields) {
     if(error) {
@@ -49,8 +52,8 @@ app.post('/signup', function(req, res) {
 
 //LOGIN PAGE
 //Checks the current database
-//if the current user does not exist in the db, then it will return false
-//this takes into account if the email is spelled incorrectly
+//If user does not exist in the db, then return false
+//Takes into consideration if email is spelled incorrectly
 app.get('/login', function(req, res) {
     var email = "Lucy@gmail.com";//req.email;
     var password = "TimBits"; //req.password;
