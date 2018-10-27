@@ -1,7 +1,7 @@
 //Declaring dependencies that will be used to run 'post' and 'get' requests
 var express = require('express');
 var mySQL = require('mysql');
-var bodyParser - require('body-parser');
+var bodyParser = require('body-parser');
 var cors = require('cors');
 
 //Declares that we are using an express object
