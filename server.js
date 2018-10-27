@@ -2,26 +2,27 @@ var express = require('express');
 var mySQL = require('mysql');
 var app = express();
 
-var connection = mySQL.createConnection({
-  host: 'us-cdbr-iron-east-01.cleardb.net',
-  user: 'bb1f6f893c4a2e',
-  password: '12aba883',
-  database: 'heroku_6d22e6ede03be83'
+var port = process.env.PORT;
+// var connection = mySQL.createConnection({
+//   host: 'us-cdbr-iron-east-01.cleardb.net',
+//   user: 'bb1f6f893c4a2e',
+//   password: '12aba883',
+//   database: 'heroku_6d22e6ede03be83'
+// });
+//
+// connection.connect(function(error) {
+//   if(error) {
+//     console.log('Error');
+//   } else {
+//     console.log('Connection');
+//   }
+// });
+
+app.get('/', function(req, res) {
+    res.send('Hello');
 });
 
-connection.connect(function(error) {
-  if(error) {
-    console.log('Error');
-  } else {
-    console.log('Connection');
-  }
-});
-
-app.get('/', function(req, resp) {
-    resp.send('Hello');
-});
-
-// app.post('/signup', function(req, resp) {
+// app.post('/signup', function(req, res) {
 //   var email = req.email;
 //   var first = req.first_name;
 //   var last = req.last_name;
