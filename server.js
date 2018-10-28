@@ -15,42 +15,35 @@ var port = process.env.PORT || 3001;
 
 //Setting up params for DB connection to the SQL database
 //Using ClearDB to maintain database connection through Heroku server
-var connection = mySQL.createConnection({
+var pool = mySQL.createPool({
+  connectionLimit: 100,
   host: 'us-cdbr-iron-east-01.cleardb.net',
   user: 'bb1f6f893c4a2e',
   password: '12aba883',
   database: 'heroku_6d22e6ede03be83'
 });
 
-//Declares the connection to database
-connection.connect(function(error) {
-  if(error) {
-    console.log('Error connecting to database');
-  } else {
-    console.log('Connected to database');
-  }
-});
-
 //SIGN UP PAGE
 //Receives data from user inputted information
 //Queries db using this data
 //If the user does not exist, then insert into the database
-
-// TO FIX: DB connection times out after 1 minute, causing server to crash!
 app.post('/signup', function(req, res) {
   var email = req.body.email;
   var first = req.body.first;
   var last = req.body.last;
   var password = req.body.password;
   var admin = 0;
-  connection.query("INSERT INTO accounts (email, first_name, last_name, password, is_admin) VALUES (?,?,?,?,?)", [email, first, last, password, admin], function(error, result, fields) {
-    if(error) {
-      console.log("Error inserting data");
-      res.send("Error inserting data")
-    } else {
-      console.log("Successful insert");
-      res.send(result)
-    }
+  pool.getConnection(function(error, connection) {
+    connection.query("INSERT INTO accounts (email, first_name, last_name, password, is_admin) VALUES (?,?,?,?,?)", [email, first, last, password, admin], function(error, result, fields) {
+      if(error) {
+        console.log("Error inserting data");
+        res.send("Error inserting data")
+      } else {
+        console.log("Successful insert");
+        res.send(result)
+      }
+    });
+    connection.release();
   });
 });
 
@@ -61,6 +54,7 @@ app.post('/signup', function(req, res) {
 app.get('/login', function(req, res) {
     var email = "Lucy@gmail.com";//req.email;
     var password = "TimBits"; //req.password;
+    // TODO: change to use pool
     connection.query("SELECT email, password FROM accounts WHERE email = ? AND password = ?", [email, password], function (error, results, fields) {
       if(error) {
         console.log("Error retreviving user");
