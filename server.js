@@ -10,8 +10,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(cors());
 
-//Port determined by Heroku,else Default as localhost:3000
-var port = process.env.PORT || 3000;
+//Port determined by Heroku, else default as localhost:3000
+var port = process.env.PORT || 3001;
 
 //Setting up params for DB connection to the SQL database
 //Using ClearDB to maintain database connection through Heroku server
@@ -25,27 +25,31 @@ var connection = mySQL.createConnection({
 //Declares the connection to database
 connection.connect(function(error) {
   if(error) {
-    console.log('Error');
+    console.log('Error connecting to database');
   } else {
-    console.log('Connection');
+    console.log('Connected to database');
   }
 });
 
 //SIGN UP PAGE
-//Recieves data from user inputed information
-//Querys db using this data
-//If the use does not exist, then insert into the database
+//Receives data from user inputted information
+//Queries db using this data
+//If the user does not exist, then insert into the database
+
+// TO FIX: DB connection times out after 1 minute, causing server to crash!
 app.post('/signup', function(req, res) {
   var email = req.body.email;
   var first = req.body.first;
   var last = req.body.last;
   var password = req.body.password;
   var admin = 0;
-  connection.query("INSERT INTO accounts (email, first_name, last_name, password, is_admin) VALUES (?,?,?,?,?)", [email, first, last, password, admin], function(error, results, fields) {
+  connection.query("INSERT INTO accounts (email, first_name, last_name, password, is_admin) VALUES (?,?,?,?,?)", [email, first, last, password, admin], function(error, result, fields) {
     if(error) {
       console.log("Error inserting data");
+      res.send("Error inserting data")
     } else {
       console.log("Successful insert");
+      res.send(result)
     }
   });
 });
@@ -69,5 +73,5 @@ app.get('/login', function(req, res) {
 });
 
 app.listen(port, function() {
-    console.log('Hit it');
+    console.log('Listening on port ' + port);
 });
