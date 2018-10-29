@@ -33,33 +33,32 @@ app.post('/signup', function(req, res) {
   var last = req.body.last;
   var password = req.body.password;
   var admin = 0;
-  pool.getConnection(function(error, connection) {
-    connection.query("INSERT INTO accounts (email, first_name, last_name, password, is_admin) VALUES (?,?,?,?,?)", [email, first, last, password, admin], function(error, result, fields) {
+  pool.query("INSERT INTO accounts (email, first_name, last_name, password, is_admin) VALUES (?,?,?,?,?)",
+    [email, first, last, password, admin],
+    function(error, result) {
       if(error) {
         console.log("Error inserting data");
-        res.send("Error inserting data")
+        res.send("User already exists");
       } else {
         console.log("Successful insert");
-        res.send(result)
+        res.send(result);
       }
     });
-    connection.release();
-  });
 });
 
 //LOGIN PAGE
 //Checks the current database
 //If user does not exist in the db, then return false
 //Takes into consideration if email is spelled incorrectly
-app.get('/login', function(req, res) {
-    var email = "Lucy@gmail.com";//req.email;
-    var password = "TimBits"; //req.password;
-    // TODO: change to use pool
-    connection.query("SELECT email, password FROM accounts WHERE email = ? AND password = ?", [email, password], function (error, results, fields) {
+app.post('/login', function(req, res) {
+    var email = req.body.email;
+    var password = req.body.password;
+    pool.query("SELECT is_admin FROM accounts WHERE email = ? AND password = ?", [email, password],
+    function (error, result) {
       if(error) {
         console.log("Error retreviving user");
-      } else if(results.length > 0) {
-        res.send(JSON.stringify(results[0].email));
+      } else if(result.length > 0) {
+        res.send(result) // result is the is_admin field
       } else {
         res.send("No such user exists");
       }
