@@ -54,13 +54,27 @@ app.post('/login', function(req, res) {
     var email = req.body.email;
     var password = req.body.password;
     pool.query("SELECT is_admin FROM accounts WHERE email = ? AND password = ?", [email, password],
-    function (error, result) {
+      function (error, result) {
+        if(error) {
+          console.log("Error retreviving user");
+        } else if(result.length > 0) {
+          res.send(result) // result is the is_admin field
+        } else {
+          res.send("No such user exists");
+        }
+      });
+});
+
+//COURSE EQUIVALENCY PAGE
+app.get('/courses', function(req, res) {
+    pool.query("SELECT 'host_program', 'host_course_number', 'host_course_name', 'gu_course_number', 'gu_course_name' FROM course_equivalencies",
+    function(error, result) {
       if(error) {
-        console.log("Error retreviving user");
-      } else if(result.length > 0) {
-        res.send(result) // result is the is_admin field
+        console.log("Error retreviving courses from database");
+        console.log(error);
       } else {
-        res.send("No such user exists");
+        console.log("Successful retrevial of courses");
+        res.send(results);
       }
     });
 });
