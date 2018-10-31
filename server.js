@@ -74,7 +74,7 @@ app.get('/courses', function(req, res) {
         console.log(error);
       } else {
         console.log("Successful retrevial of courses");
-        res.send(results);
+        res.send(result);
       }
     });
 });
