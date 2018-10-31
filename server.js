@@ -72,7 +72,7 @@ app.get('/courses', function(req, res) {
       if(error) {
         console.log("Error retreviving courses from database");
         console.log(error);
-      } else {
+      } else { 
         console.log("Successful retrevial of courses");
         res.send(result);
       }
