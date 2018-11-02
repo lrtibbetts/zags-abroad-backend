@@ -24,9 +24,8 @@ var pool = mySQL.createPool({
 });
 
 //SIGN UP PAGE
-//Receives data from user inputted information
-//Queries db using this data
-//If the user does not exist, then insert into the database
+//If email is not already in the database, then insert
+//Else, return "User already exists"
 app.post('/signup', function(req, res) {
   var email = req.body.email;
   var first = req.body.first;
@@ -37,32 +36,35 @@ app.post('/signup', function(req, res) {
     [email, first, last, password, admin],
     function(error, result) {
       if(error) {
-        console.log("Error inserting data");
         res.send("User already exists");
       } else {
-        console.log("Successful insert");
         res.send(result);
       }
     });
 });
 
 //LOGIN PAGE
-//Checks the current database
-//If user does not exist in the db, then return false
-//Takes into consideration if email is spelled incorrectly
+//If email does not exist in db, return "Email not found"
+//If email exists but password is incorrect, return "Incorrect password"
+//If valid login, return account info (json)
 app.post('/login', function(req, res) {
     var email = req.body.email;
     var password = req.body.password;
-    pool.query("SELECT is_admin FROM accounts WHERE email = ? AND password = ?", [email, password],
-      function (error, result) {
+    pool.query("SELECT * FROM accounts WHERE email = ?", [email], function (error, result) {
         if(error) {
-          console.log("Error retreviving user");
+          res.send(error);
         } else if(result.length > 0) {
-          res.send(result) // result is the is_admin field
+          // Email found
+          if(result[0].password === password) {
+            // Correct password
+            res.send(result[0]);
+          } else {
+            res.send("Incorrect password");
+          }
         } else {
-          res.send("No such user exists");
+          res.send("Email not found");
         }
-      });
+    });
 });
 
 //COURSE EQUIVALENCY PAGE
@@ -70,11 +72,8 @@ app.get('/courses', function(req, res) {
     pool.query("SELECT host_program, host_course_number, host_course_name, gu_course_number, gu_course_name FROM course_equivalencies",
     function(error, result) {
       if(error) {
-        console.log("Error retreviving courses from database");
-        console.log(error);
+        res.send(error);
       } else {
-        console.log("Successful retrevial of courses");
-        console.log(result);
         res.send(result);
       }
     });
