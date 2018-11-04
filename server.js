@@ -3,7 +3,8 @@ var express = require('express');
 var mySQL = require('mysql');
 var bodyParser = require('body-parser');
 var cors = require('cors');
-
+var bcrypt = require('bcrypt');
+const saltRounds = 10;
 //Declares that we are using an express object
 var app = express();
 app.use(bodyParser.urlencoded({extended: true}));
@@ -32,15 +33,22 @@ app.post('/signup', function(req, res) {
   var last = req.body.last;
   var password = req.body.password;
   var admin = 0;
-  pool.query("INSERT INTO accounts (email, first_name, last_name, password, is_admin) VALUES (?,?,?,?,?)",
-    [email, first, last, password, admin],
-    function(error, result) {
-      if(error) {
-        res.send("User already exists");
-      } else {
-        res.send(result);
-      }
-    });
+  // https://www.abeautifulsite.net/hashing-passwords-with-nodejs-and-bcrypt
+  bcrypt.hash(password, saltRounds, function(hashError, hash) {
+    if (hashError) {
+      console.log(hashError);
+    } else {
+      pool.query("INSERT INTO accounts (email, first_name, last_name, password, is_admin) VALUES (?,?,?,?,?)",
+        [email, first, last, hash, admin],
+        function(queryError, queryResult) {
+          if(queryError) {
+            res.send("User already exists");
+          } else {
+            res.send(queryResult);
+          }
+        });
+    }
+  });
 });
 
 //LOGIN PAGE
@@ -50,17 +58,29 @@ app.post('/signup', function(req, res) {
 app.post('/login', function(req, res) {
     var email = req.body.email;
     var password = req.body.password;
-    pool.query("SELECT * FROM accounts WHERE email = ?", [email], function (error, result) {
-        if(error) {
-          res.send(error);
-        } else if(result.length > 0) {
+    pool.query("SELECT * FROM accounts WHERE email = ?", [email], function (queryError, queryResult) {
+        if(queryError) {
+          res.send(queryError);
+        } else if(queryResult.length > 0) {
           // Email found
-          if(result[0].password === password) {
-            // Correct password
-            res.send(result[0]);
-          } else {
-            res.send("Incorrect password");
-          }
+          bcrypt.compare(password, queryResult[0].password, function(bcryptError, bcryptResult) {
+            console.log("Password: " + password);
+            console.log("Hash: " + queryResult[0].password);
+            console.log(bcryptResult);
+            if(bcryptResult){
+              console.log("Password match")
+              res.send("Password match");
+            } else {
+              console.log("Incorrect password");
+              res.send("Incorrect password");
+            }
+          });
+          // if(result[0].password === password) {
+          //   // Correct password
+          //   res.send(result[0]);
+          // } else {
+          //   res.send("Incorrect password");
+          // }
         } else {
           res.send("Email not found");
         }
@@ -70,11 +90,11 @@ app.post('/login', function(req, res) {
 //COURSE EQUIVALENCY PAGE
 app.get('/courses', function(req, res) {
     pool.query("SELECT host_program, host_course_number, host_course_name, gu_course_number, gu_course_name FROM course_equivalencies",
-    function(error, result) {
-      if(error) {
-        res.send(error);
+    function(queryError, queryResult) {
+      if(queryError) {
+        res.send(queryError);
       } else {
-        res.send(result);
+        res.send(queryResult);
       }
     });
 });
