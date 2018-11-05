@@ -79,7 +79,7 @@ app.post('/login', function(req, res) {
 
 //COURSE EQUIVALENCY PAGE
 app.get('/courses', function(req, res) {
-    pool.query("SELECT host_program, host_course_number, host_course_name, gu_course_number, gu_course_name FROM course_equivalencies",
+    pool.query("SELECT * FROM course_equivalencies",
     function(queryError, queryResult) {
       if(queryError) {
         res.send(queryError);
