@@ -66,7 +66,7 @@ app.post('/login', function(req, res) {
           // Email found
           bcrypt.compare(password, queryResult[0].password, function(bcryptError, bcryptResult) {
             if(bcryptResult){
-              res.send(queryResult);
+              res.send(queryResult[0]);
             } else {
               res.send("Incorrect password");
             }
