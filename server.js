@@ -133,7 +133,7 @@ app.post('/deletecourse', function(req, res) {
 });
 
 //EDIT A COURSE IN THE EQUIVALENCY TABLE
-app.post('/courses/editcourse' function(req, res) {
+app.post('/editcourse' function(req, res) {
 
 });
 
