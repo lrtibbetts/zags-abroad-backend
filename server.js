@@ -90,64 +90,53 @@ app.get('/courses', function(req, res) {
 });
 
 //ADD A COURSE TO THE EQUIVALENCY TABLE
-var host_program = "a" //req.body.host_program;
-var host_course_number = "a" //req.body.host_course_number;
-var host_course_name = "a" //req.body.host_course_name;
-var gu_course_number = "a" //req.body.gu_course_number;
-var gu_course_name = "a" //req.body.gu_course_name;
-var comments = "a" //req.body.comments;
-var signature_needed = "a" //req.body.signature_needed;
-var department = "a" //req.body.department;
-var approved_by = "a" //req.body.approved_by;
-var approval_date = "a" //req.body.approval_date;
-var approved_until = "a" //req.body.approved_until;
-
-//this will need to be changed because it will be connected to a button
-//use /courses
-app.post('/courses/addcourses', function(req, res) {
+app.post('/addcourse', function(req, res) {
+  var host_program = req.body.host_program;
+  var host_course_number = req.body.host_course_number;
+  var host_course_name = req.body.host_course_name;
+  var gu_course_number = req.body.gu_course_number;
+  var gu_course_name = req.body.gu_course_name;
+  var comments = req.body.comments;
+  var signature_needed = req.body.signature_needed;
+  var approved_by = req.body.approved_by;
+  var approval_date = req.body.approval_date;
+  var approved_until = req.body.approved_until;
+  var department = req.body.department;
   pool.query("INSERT INTO course_equivalencies (host_program, host_course_number, host_course_name, gu_course_number, gu_course_name, comments, signature_needed," +
   " department, approved_by, approval_date, approved_until) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
   [host_program, host_course_number, host_course_name, gu_course_number, gu_course_name, comments, signature_needed, department, approved_by, approval_date, approved_until],
-  function(addError, addResult) {
-    if(addError) {
-      console.log("NO insert made");
-      res.send("There is an error adding the course");
+  function(error, result) {
+    if(error) {
+      res.send(error);
     } else {
-      console.log("inserted course");
-      res.send(addResult);
+      res.send(result);
     }
-  })
-})
-//DELETE A COURSE FROM THE EQUIVALENCY TABLE
-//use /courses to delete the course
-//this will be linked to a button
-//also to test locally, change to a get request
-app.post('/courses/deletecourse', function(req, res) {
-  var host_program = "a" //req.body.host_program;
-  var host_course_number = "a" //req.body.host_course_number;
-  var host_course_name = "a" //req.body.host_course_name;
-  var gu_course_number = "a" //req.body.gu_course_number;
-  var gu_course_name = "a" //req.body.gu_course_name;
+  });
+});
 
-  pool.query("DELETE FROM course_equivalencies WHERE host_program = ? AND host_course_name = ? AND host_course_number = ? AND gu_course_number = ?",
-  [host_program, host_course_name, host_course_number, gu_course_number], function(deleteError, queryResult) {
-    if(deleteError) {
-      res.send("Error deleting course from database");
-    } else if(queryResult.affectedRows == 0) {
-      console.log("NOPE, record doesn't exist");
-      res.send("recored does not exist in the database");
+//DELETE A COURSE FROM THE EQUIVALENCY TABLE
+app.post('/deletecourse', function(req, res) {
+  var host_program = req.body.host_program;
+  var host_course_name = req.body.host_course_name;
+  var gu_course_number = req.body.gu_course_number;
+  var gu_course_name = req.body.gu_course_name;
+  pool.query("DELETE FROM course_equivalencies WHERE host_program = ? AND host_course_name = ? AND gu_course_number = ? AND gu_course_name = ?",
+  [host_program, host_course_name, gu_course_number, gu_course_name], function(error, result) {
+    if(error) {
+      res.send(error);
+    } else if(result.affectedRows == 0) {
+      res.send("Course does not exist");
+    } else {
+      res.send(result);
     }
-    else {
-      console.log("YES");
-      res.send(queryResult);
-    }
-  })
-})
+  });
+});
 
 //EDIT A COURSE IN THE EQUIVALENCY TABLE
-app.get('/courses/editcourse' function(req, res) {
+app.post('/courses/editcourse' function(req, res) {
 
-})
+});
+
 app.listen(port, function() {
     console.log("HI")
     console.log('Listening on port ' + port);
