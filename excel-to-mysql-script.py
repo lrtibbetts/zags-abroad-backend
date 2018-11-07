@@ -19,7 +19,7 @@ print ("Connection!")
 
 cursor = connection.cursor()
 query = """INSERT INTO course_equivalencies(host_program, host_course_number, host_course_name,
-gu_course_number, gu_course_name, comments, signature_needed, department, approved_by, approval_date, approved_until) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
+gu_course_number, gu_course_name, comments, signature_needed, approved_by, approval_date, approved_until, department) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
 
 for r in range(0, sheet.nrows):
     host_program = sheet.cell(r,0).value
@@ -30,12 +30,12 @@ for r in range(0, sheet.nrows):
     comments = sheet.cell(r,5).value
     signature_needed = sheet.cell(r,6).value
     department = sheet.cell(r,7).value
-    approved_by = sheet.cell(r,8).value
-    approval_date = sheet.cell(r,9).value
-    approved_until = sheet.cell(r,10).value
+    approved_by = datetime.strptime(sheet.cell(r,8).value, '%m/%d/%Y')
+    approval_date = datetime.strptime(sheet.cell(r,9).value, '%m/%d/%Y')
+    approved_until = datetime.strptime(sheet.cell(r,10).value, '%m/%d/%Y')
 
     values = (host_program, host_course_number, host_course_name,
-    gu_course_number, gu_course_name, comments, signature_needed, department, approved_by, approval_date, approved_until)
+    gu_course_number, gu_course_name, comments, signature_needed, approved_by, approval_date, approved_until, department)
 
     cursor.execute(query, values)
     print(values)
