@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 var cors = require('cors');
 var bcrypt = require('bcrypt');
 const saltRounds = 10;
+
 //Declares that we are using an express object
 var app = express();
 app.use(bodyParser.urlencoded({extended: true}));
@@ -64,23 +65,12 @@ app.post('/login', function(req, res) {
         } else if(queryResult.length > 0) {
           // Email found
           bcrypt.compare(password, queryResult[0].password, function(bcryptError, bcryptResult) {
-            console.log("Password: " + password);
-            console.log("Hash: " + queryResult[0].password);
-            console.log(bcryptResult);
             if(bcryptResult){
-              console.log("Password match")
-              res.send("Password match");
+              res.send(queryResult[0]);
             } else {
-              console.log("Incorrect password");
               res.send("Incorrect password");
             }
           });
-          // if(result[0].password === password) {
-          //   // Correct password
-          //   res.send(result[0]);
-          // } else {
-          //   res.send("Incorrect password");
-          // }
         } else {
           res.send("Email not found");
         }
@@ -89,7 +79,7 @@ app.post('/login', function(req, res) {
 
 //COURSE EQUIVALENCY PAGE
 app.get('/courses', function(req, res) {
-    pool.query("SELECT host_program, host_course_number, host_course_name, gu_course_number, gu_course_name FROM course_equivalencies",
+    pool.query("SELECT * FROM course_equivalencies",
     function(queryError, queryResult) {
       if(queryError) {
         res.send(queryError);
