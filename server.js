@@ -91,6 +91,7 @@ app.get('/courses', function(req, res) {
 
 //ADD A COURSE TO THE EQUIVALENCY TABLE
 app.post('/addcourse', function(req, res) {
+  var id = req.body.id;
   var host_program = req.body.host_program;
   var host_course_number = req.body.host_course_number;
   var host_course_name = req.body.host_course_name;
@@ -102,9 +103,9 @@ app.post('/addcourse', function(req, res) {
   var approval_date = req.body.approval_date;
   var approved_until = req.body.approved_until;
   var department = req.body.department;
-  pool.query("INSERT INTO course_equivalencies (host_program, host_course_number, host_course_name, gu_course_number, gu_course_name, comments, signature_needed," +
-  " department, approved_by, approval_date, approved_until) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
-  [host_program, host_course_number, host_course_name, gu_course_number, gu_course_name, comments, signature_needed, department, approved_by, approval_date, approved_until],
+  pool.query("INSERT INTO course_equivalencies (id, host_program, host_course_number, host_course_name, gu_course_number, gu_course_name, comments, signature_needed," +
+  " department, approved_by, approval_date, approved_until) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
+  [id, host_program, host_course_number, host_course_name, gu_course_number, gu_course_name, comments, signature_needed, department, approved_by, approval_date, approved_until],
   function(error, result) {
     if(error) {
       res.send(error);
@@ -116,15 +117,11 @@ app.post('/addcourse', function(req, res) {
 
 //DELETE A COURSE FROM THE EQUIVALENCY TABLE
 app.post('/deletecourse', function(req, res) {
-  var host_program = req.body.host_program;
-  var host_course_name = req.body.host_course_name;
-  var gu_course_number = req.body.gu_course_number;
-  var gu_course_name = req.body.gu_course_name;
-  pool.query("DELETE FROM course_equivalencies WHERE host_program = ? AND host_course_name = ? AND gu_course_number = ? AND gu_course_name = ?",
-  [host_program, host_course_name, gu_course_number, gu_course_name], function(error, result) {
+  var id = req.body.id;
+  pool.query("DELETE FROM course_equivalencies WHERE id = ?", [id], function(error, result) {
     if(error) {
       res.send(error);
-    } else if(result.affectedRows == 0) {
+    } else if(result.affectedRows === 0) {
       res.send("Course does not exist");
     } else {
       res.send(result);
