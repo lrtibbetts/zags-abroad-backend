@@ -79,7 +79,7 @@ app.post('/login', function(req, res) {
 
 //COURSE EQUIVALENCY PAGE
 app.get('/courses', function(req, res) {
-    pool.query("SELECT host_program, host_course_number, host_course_name, gu_course_number, gu_course_name FROM course_equivalencies",
+    pool.query("SELECT * FROM course_equivalencies",
     function(queryError, queryResult) {
       if(queryError) {
         res.send(queryError);
@@ -90,65 +90,76 @@ app.get('/courses', function(req, res) {
 });
 
 //ADD A COURSE TO THE EQUIVALENCY TABLE
-var host_program = "a" //req.body.host_program;
-var host_course_number = "a" //req.body.host_course_number;
-var host_course_name = "a" //req.body.host_course_name;
-var gu_course_number = "a" //req.body.gu_course_number;
-var gu_course_name = "a" //req.body.gu_course_name;
-var comments = "a" //req.body.comments;
-var signature_needed = "a" //req.body.signature_needed;
-var department = "a" //req.body.department;
-var approved_by = "a" //req.body.approved_by;
-var approval_date = "a" //req.body.approval_date;
-var approved_until = "a" //req.body.approved_until;
-
-//this will need to be changed because it will be connected to a button
-//use /courses
-app.post('/courses/addcourse', function(req, res) {
+app.post('/addcourse', function(req, res) {
+  var host_program = req.body.host_program;
+  var host_course_number = req.body.host_course_number;
+  var host_course_name = req.body.host_course_name;
+  var gu_course_number = req.body.gu_course_number;
+  var gu_course_name = req.body.gu_course_name;
+  var comments = req.body.comments;
+  var signature_needed = req.body.signature_needed;
+  var approved_by = req.body.approved_by;
+  var approval_date = req.body.approval_date;
+  var approved_until = req.body.approved_until;
+  var department = req.body.department;
   pool.query("INSERT INTO course_equivalencies (host_program, host_course_number, host_course_name, gu_course_number, gu_course_name, comments, signature_needed," +
   " department, approved_by, approval_date, approved_until) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
   [host_program, host_course_number, host_course_name, gu_course_number, gu_course_name, comments, signature_needed, department, approved_by, approval_date, approved_until],
   function(addError, addResult) {
     if(addError) {
-      console.log("NO insert made");
-      res.send("There is an error adding the course");
+      console.log(addError);
+      res.send(addError);
     } else {
-      console.log("inserted course");
+      console.log("COURSE ADDED");
       res.send(addResult);
     }
   });
 });
 
 //DELETE A COURSE FROM THE EQUIVALENCY TABLE
-//use /courses to delete the course
-//this will be linked to a button
-//also to test locally, change to a get request
-app.post('/courses/deletecourse', function(req, res) {
-  var host_program = "a" //req.body.host_program;
-  var host_course_number = "a" //req.body.host_course_number;
-  var host_course_name = "a" //req.body.host_course_name;
-  var gu_course_number = "a" //req.body.gu_course_number;
-  var gu_course_name = "a" //req.body.gu_course_name;
-
-  pool.query("DELETE FROM course_equivalencies WHERE host_program = ? AND host_course_name = ? AND host_course_number = ? AND gu_course_number = ?",
-  [host_program, host_course_name, host_course_number, gu_course_number], function(deleteError, deleteResult) {
+app.post('/deletecourse', function(req, res) {
+  var id = req.body.id;
+  pool.query("DELETE FROM course_equivalencies WHERE id = ?", [id], function(deleteError, deleteResult) {
     if(deleteError) {
-      res.send("Error deleting course from database");
-    } else if(queryResult.affectedRows == 0) {
-      console.log("NOPE, record doesn't exist");
-      res.send("Recored does not exist in the database");
-    }
-    else {
-      console.log("YES");
+      res.send(deleteError);
+    } else if(result.affectedRows === 0) {
+      res.send("Course does not exist");
+    } else {
       res.send(deleteResult);
     }
   });
 });
 
 //EDIT A COURSE IN THE EQUIVALENCY TABLE
-app.get('/courses/editcourse' function(req, res) {
+app.post('/editcourse', function(req, res) {
+  var id = req.body.id;
+  var host_program = req.body.host_program;
+  var host_course_number = req.body.host_course_number;
+  var host_course_name = req.body.host_course_name;
+  var gu_course_number = req.body.gu_course_number;
+  var gu_course_name = req.body.gu_course_name;
+  var comments = req.body.comments;
+  var signature_needed = req.body.signature_needed;
+  var approved_by = req.body.approved_by;
+  var approval_date = req.body.approval_date;
+  var approved_until = req.body.approved_until;
+  var department = req.body.department;
+  pool.query("UPDATE course_equivalencies SET host_program = ?, host_course_number = ?," +
+  " host_course_name = ?, gu_course_number = ?, gu_course_name = ?, comments = ?," +
+  " signature_needed = ?, department = ?, approved_by = ?, approval_date = ?, approved_until = ?" +
+  " WHERE id = ?",
+  [host_program, host_course_number, host_course_name, gu_course_number, gu_course_name, comments, signature_needed, department, approved_by, approval_date, approved_until, id],
+  function(editError, editResult) {
+    if(editError) {
+      console.log(editError);
+      res.send(editError);
+    } else {
+      console.log("COURSE MODIFIED");
+      res.send(editResult);
+    }
+  });
 });
+
 app.listen(port, function() {
-    console.log("HI")
     console.log('Listening on port ' + port);
 });
