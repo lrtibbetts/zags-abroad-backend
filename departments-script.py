@@ -20,7 +20,7 @@ print ("Connection!")
 cursor = connection.cursor()
 query = """INSERT INTO departments(dept_name, dept_code) VALUES(%s,%s)"""
 
-for r in range(0, sheet.nrows):
+for r in range(1, sheet.nrows):
     dept_name = sheet.cell(r,0).value
     dept_code = sheet.cell(r, 1).value
 
