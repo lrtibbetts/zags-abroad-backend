@@ -1,4 +1,3 @@
-
 #this is a python script to write excel to a file
 import xlrd
 import pymysql
@@ -23,7 +22,7 @@ cursor = connection.cursor()
 query = """INSERT INTO course_equivalencies(host_program, host_course_number, host_course_name,
 gu_course_number, gu_course_name, comments, signature_needed, approved_by, approval_date, approved_until, department) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
 
-for r in range(0, sheet.nrows):
+for r in range(1, sheet.nrows):
     host_program = sheet.cell(r,0).value
     host_course_number = sheet.cell(r,1).value
     host_course_name = sheet.cell(r,2).value
