@@ -160,6 +160,22 @@ app.post('/editcourse', function(req, res) {
   });
 });
 
+app.get('/departments', function(req, res) {
+  var department = req.body.department;
+  pool.query("SELECT host_program, host_course_name, host_course_number, gu_course_name, gu_course_number FROM course_equivalencies WHERE department = ?",
+  [department],
+  function (deptError, deptResult) {
+    if(deptError) {
+      console.log("Department doesn't exist");
+      res.send(editError);
+    } else {
+      console.log("Courses have been found");
+      res.send(deptResult);
+    }
+  });
+});
+
+
 app.listen(port, function() {
     console.log('Listening on port ' + port);
 });

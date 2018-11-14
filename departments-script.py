@@ -4,6 +4,7 @@ import pymysql
 from pymysql import cursors
 
 #opens the workbook and references the spreadsheet
+#add a file path
 book = xlrd.open_workbook('departments.xlsx')
 sheet = book.sheet_by_index(0)
 
@@ -17,14 +18,13 @@ connection = pymysql.connect(host = 'us-cdbr-iron-east-01.cleardb.net',
 print ("Connection!")
 
 cursor = connection.cursor()
-query = """INSERT INTO departments(dept_name, dept_code, deptId) VALUES(%s,%s,%s)"""
+query = """INSERT INTO departments(dept_name, dept_code) VALUES(%s,%s)"""
 
 for r in range(0, sheet.nrows):
     dept_name = sheet.cell(r,0).value
     dept_code = sheet.cell(r, 1).value
-    deptId = sheet.cell(r,2).value
 
-    values = (dept_name, dept_code, deptId)
+    values = (dept_name, dept_code)
     cursor.execute(query, values)
     print(values)
 

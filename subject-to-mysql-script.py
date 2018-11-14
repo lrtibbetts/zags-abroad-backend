@@ -5,7 +5,7 @@ from pymysql import cursors
 
 #opens the workbook and references the spreadsheet
 book = xlrd.open_workbook('sponsored_2018.xlsx')
-sheet = book.sheet_by_index(3)
+sheet = book.sheet_by_index(2)
 
 #connect to the database
 connection = pymysql.connect(host = 'us-cdbr-iron-east-01.cleardb.net',
@@ -16,6 +16,7 @@ connection = pymysql.connect(host = 'us-cdbr-iron-east-01.cleardb.net',
                             cursorclass = cursors.DictCursor)
 print ("Connection!")
 
+cursor = connection.cursor();
 query = """INSERT INTO subjects(subject_code, subject_name) VALUES(%s, %s)"""
 
 for r in range(1, sheet.nrows):
