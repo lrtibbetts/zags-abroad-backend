@@ -76,7 +76,7 @@ app.post('/login', function(req, res) {
         }
     });
 });
-
+ 
 //COURSE EQUIVALENCY PAGE
 app.get('/courses', function(req, res) {
     pool.query("SELECT * FROM course_equivalencies",
