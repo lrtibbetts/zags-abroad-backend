@@ -206,9 +206,9 @@ app.get('/subjects', function(req, res) {
       res.send(subjResult);
       console.log("Success. got the subject");
     }
-  })
-})
+  });
+});
 
 app.listen(port, function() {
     console.log('Listening on port ' + port);
-}); 
+});
