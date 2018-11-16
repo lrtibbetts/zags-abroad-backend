@@ -160,6 +160,55 @@ app.post('/editcourse', function(req, res) {
   });
 });
 
+//get all of the depts
+//returns all the courses that are in the department
+app.get('/departments', function(req, res) {
+  var department = req.body.department;
+  pool.query("SELECT host_program, host_course_name, host_course_number, gu_course_name, gu_course_number FROM course_equivalencies WHERE department = ?",
+  [department],
+  function (deptError, deptResult) {
+    if(deptError) {
+      console.log("Department doesn't exist");
+      res.send(editError);
+    } else {
+      console.log("Courses have been found");
+      res.send(deptResult);
+    }
+  });
+});
+
+//get all the programs
+app.get('/programs', function(req, res) {
+  var program = req.body.program;
+  pool.query("SELECT host_program, host_course_name, host_course_number, gu_course_name, gu_course_number FROM course_equivalencies WHERE host_program = ?",
+  [program],
+  function(programError, programResult) {
+    if(programError) {
+      console.log("Program doesn't exist");
+      res.send(programError);
+    } else {
+      console.log("The program has been found: " + programResult);
+      res.send(programResult);
+    }
+  });
+});
+
+//get all the subjects
+app.get('/subjects', function(req, res) {
+  var subject = req.body.subject
+  pool.query("SELECT host_program, host_course_name, host_course_number, gu_course_name, gu_course_number FROM course_equivalencies c JOIN subjects s ON (SUBSTRING(c.gu_course_number,1,4) = s.subject_code) WHERE s.subject_code = ? OR s.subject_name = ?",
+  [subject],
+  function(subjError, subjResult) {
+    if(subjError) {
+      res.send(subjError);
+      console.log("error, cannot find subject");
+    } else {
+      res.send(subjResult);
+      console.log("Success. got the subject");
+    }
+  });
+});
+
 app.listen(port, function() {
-    console.log('Listening on port ' + port); 
+    console.log('Listening on port ' + port);
 });
