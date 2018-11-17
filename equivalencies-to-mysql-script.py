@@ -4,7 +4,6 @@ import xlrd
 import pymysql
 from pymysql import cursors
 from datetime import datetime
-import time
 
 #opens the workbook and references the spreadsheet
 book = xlrd.open_workbook('sponsored_2018.xlsx')
@@ -35,11 +34,11 @@ for r in range(0, sheet.nrows):
     if(sheet.cell(r,8).value == ''):
         approval_date = ''
     else:
-        approval_date = xlrd.xldate.xldate_as_datetime(int(sheet.cell(r, 8).value), book.datemode).strftime('%m/%d/%Y');
+        approval_date = xlrd.xldate.xldate_as_datetime(int(sheet.cell(r, 8).value), book.datemode).strftime('%m-%d-%Y');
     if(sheet.cell(r,9).value == ''):
         approved_until = ''
     else:
-        approved_until = xlrd.xldate.xldate_as_datetime(int(sheet.cell(r, 9).value), book.datemode).strftime('%m/%d/%Y');
+        approved_until = xlrd.xldate.xldate_as_datetime(int(sheet.cell(r, 9).value), book.datemode).strftime('%m-%d-%Y');
     #approved_until = xlrd.xldate.xldate_as_datetime(int(sheet.cell(r, 9).value), book.datemode).strftime('%m/%d/%Y');
     department = sheet.cell(r,10).value
 
