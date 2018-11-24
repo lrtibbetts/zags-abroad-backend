@@ -122,7 +122,7 @@ app.post('/deletecourse', function(req, res) {
   pool.query("DELETE FROM course_equivalencies WHERE id = ?", [id], function(deleteError, deleteResult) {
     if(deleteError) {
       res.send(deleteError);
-    } else if(result.affectedRows === 0) {
+    } else if(deleteResult.affectedRows === 0) {
       res.send("Course does not exist");
     } else {
       res.send(deleteResult);
