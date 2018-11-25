@@ -189,7 +189,7 @@ app.get('/programs', function(req, res) {
   });
 });
 
-//get all subjectsfiltered//no filter applied
+//get all subjects...no filter applied
 app.get('/subjects', function(req, res) {
   pool.query("SELECT subject_name FROM subjects", function(err, result) {
     if(err) {
