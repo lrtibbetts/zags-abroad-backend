@@ -167,7 +167,7 @@ app.post('/editcourse', function(req, res) {
 
 //get all of the depts
 app.get('/departments', function(req, res) {
-  pool.query("SELECT dept_name FROM departments", function(err, result) {
+  pool.query("SELECT dept_code FROM departments", function(err, result) {
     if(err) {
       console.log("Cannot get departments");
       res.send(err);
