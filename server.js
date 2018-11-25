@@ -78,6 +78,8 @@ app.post('/login', function(req, res) {
 });
 
 //COURSE EQUIVALENCY PAGE
+//this selects all of the courses
+//we are selecting all the columns but will only show a few important row
 app.get('/courses', function(req, res) {
     pool.query("SELECT * FROM course_equivalencies",
     function(queryError, queryResult) {
@@ -90,21 +92,23 @@ app.get('/courses', function(req, res) {
 });
 
 //ADD A COURSE TO THE EQUIVALENCY TABLE
+//allows admin to add courses to the course equivalency table
 app.post('/addcourse', function(req, res) {
   var host_program = req.body.host_program;
   var host_course_number = req.body.host_course_number;
   var host_course_name = req.body.host_course_name;
   var gu_course_number = req.body.gu_course_number;
   var gu_course_name = req.body.gu_course_name;
+  var core = req.body.core;
   var comments = req.body.comments;
   var signature_needed = req.body.signature_needed;
   var approved_by = req.body.approved_by;
   var approval_date = req.body.approval_date;
   var approved_until = req.body.approved_until;
   var department = req.body.department;
-  pool.query("INSERT INTO course_equivalencies (host_program, host_course_number, host_course_name, gu_course_number, gu_course_name, comments, signature_needed," +
+  pool.query("INSERT INTO course_equivalencies (host_program, host_course_number, host_course_name, gu_course_number, gu_course_name, core, comments, signature_needed," +
   " department, approved_by, approval_date, approved_until) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
-  [host_program, host_course_number, host_course_name, gu_course_number, gu_course_name, comments, signature_needed, department, approved_by, approval_date, approved_until],
+  [host_program, host_course_number, host_course_name, gu_course_number, gu_course_name, core, comments, signature_needed, department, approved_by, approval_date, approved_until],
   function(addError, addResult) {
     if(addError) {
       console.log(addError);
@@ -138,6 +142,7 @@ app.post('/editcourse', function(req, res) {
   var host_course_name = req.body.host_course_name;
   var gu_course_number = req.body.gu_course_number;
   var gu_course_name = req.body.gu_course_name;
+  var core = req.body.core;
   var comments = req.body.comments;
   var signature_needed = req.body.signature_needed;
   var approved_by = req.body.approved_by;
@@ -145,10 +150,10 @@ app.post('/editcourse', function(req, res) {
   var approved_until = req.body.approved_until;
   var department = req.body.department;
   pool.query("UPDATE course_equivalencies SET host_program = ?, host_course_number = ?," +
-  " host_course_name = ?, gu_course_number = ?, gu_course_name = ?, comments = ?," +
+  " host_course_name = ?, gu_course_number = ?, gu_course_name = ?, core = ?, comments = ?," +
   " signature_needed = ?, department = ?, approved_by = ?, approval_date = ?, approved_until = ?" +
   " WHERE id = ?",
-  [host_program, host_course_number, host_course_name, gu_course_number, gu_course_name, comments, signature_needed, department, approved_by, approval_date, approved_until, id],
+  [host_program, host_course_number, host_course_name, gu_course_number, gu_course_name, core, comments, signature_needed, department, approved_by, approval_date, approved_until, id],
   function(editError, editResult) {
     if(editError) {
       console.log(editError);
@@ -172,9 +177,33 @@ app.get('/departments', function(req, res) {
   });
 });
 
+//gets all the programs...no filter applied
+app.get('/programs', function(req, res) {
+  pool.query("SELECT host_program FROM programs", function(err, result) {
+    if(err) {
+      console.log("Cannot get programs");
+      res.send(err);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+//get all subjectsfiltered//no filter applied
+app.get('/subjects', function(req, res) {
+  pool.query("SELECT subject_name FROM subjects", function(err, result) {
+    if(err) {
+      console.log("Cannot get subjects");
+      res.send(err);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
 //get all of the depts
 //returns all the courses that are in the department
-app.get('/departments', function(req, res) {
+app.get('/departmentsfiltered', function(req, res) {
   var department = req.body.department;
   pool.query("SELECT host_program, host_course_name, host_course_number, gu_course_name, gu_course_number FROM course_equivalencies WHERE department = ?",
   [department],
@@ -189,8 +218,8 @@ app.get('/departments', function(req, res) {
   });
 });
 
-//get all the programs
-app.get('/programs', function(req, res) {
+//get all the programs filtered
+app.get('/programsfiltered', function(req, res) {
   var program = req.body.program;
   pool.query("SELECT host_program, host_course_name, host_course_number, gu_course_name, gu_course_number FROM course_equivalencies WHERE host_program = ?",
   [program],
@@ -205,8 +234,8 @@ app.get('/programs', function(req, res) {
   });
 });
 
-//get all the subjects
-app.get('/subjects', function(req, res) {
+//get all the subjects filtered
+app.get('/subjectsfiltered', function(req, res) {
   var subject = req.body.subject
   pool.query("SELECT host_program, host_course_name, host_course_number, gu_course_name, gu_course_number FROM course_equivalencies c JOIN subjects s ON (SUBSTRING(c.gu_course_number,1,4) = s.subject_code) WHERE s.subject_code = ? OR s.subject_name = ?",
   [subject],
