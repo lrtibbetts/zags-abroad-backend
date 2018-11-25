@@ -177,9 +177,9 @@ app.get('/departments', function(req, res) {
   });
 });
 
-//gets all the programs...no filter applied
+//get all programs...no filter applied
 app.get('/programs', function(req, res) {
-  pool.query("SELECT host_program FROM programs", function(err, result) {
+  pool.query("SELECT host_program FROM course_equivalencies", function(err, result) {
     if(err) {
       console.log("Cannot get programs");
       res.send(err);
