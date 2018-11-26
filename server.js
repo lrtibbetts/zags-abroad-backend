@@ -237,7 +237,7 @@ app.get('/programsfiltered', function(req, res) {
 app.post('/filterbysubject', function(req, res) {
   var subject = req.body.subject
   pool.query("SELECT DISTINCT host_program FROM course_equivalencies c JOIN subjects" +
-  "s ON s.subject_name = ? WHERE (SUBSTRING(c.gu_course_number,1,4) = s.subject_code)",
+  "ON s.subject_name = ? WHERE (SUBSTRING(c.gu_course_number,1,4) = s.subject_code)",
   [subject],
   function(subjError, subjResult) {
     if(subjError) {
