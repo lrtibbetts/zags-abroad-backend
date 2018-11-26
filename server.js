@@ -191,7 +191,7 @@ app.get('/programs', function(req, res) {
 
 //get all subjects...no filter applied
 app.get('/subjects', function(req, res) {
-  pool.query("SELECT subject_name FROM subjects", function(err, result) {
+  pool.query("SELECT subject_name FROM subjects ORDER BY subject_name ASC", function(err, result) {
     if(err) {
       console.log("Cannot get subjects");
       res.send(err);
