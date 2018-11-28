@@ -165,7 +165,7 @@ app.post('/editcourse', function(req, res) {
   });
 });
 
-//get all of the depts
+//GET ALL DEPARTMENTS
 app.get('/departments', function(req, res) {
   pool.query("SELECT dept_code FROM departments", function(err, result) {
     if(err) {
@@ -177,7 +177,7 @@ app.get('/departments', function(req, res) {
   });
 });
 
-//get all programs...no filter applied
+//GET ALL PROGRAMS
 app.get('/programs', function(req, res) {
   pool.query("SELECT DISTINCT host_program FROM course_equivalencies", function(err, result) {
     if(err) {
@@ -189,7 +189,8 @@ app.get('/programs', function(req, res) {
   });
 });
 
-//get all subjects...no filter applied
+//GET ALL SUBJECTS
+//no filters applied
 app.get('/subjects', function(req, res) {
   pool.query("SELECT subject_name FROM subjects ORDER BY subject_name ASC", function(err, result) {
     if(err) {
@@ -201,7 +202,8 @@ app.get('/subjects', function(req, res) {
   });
 });
 
-//get all the courses filtered by subject
+//SUBJECT FILTER
+//return programs with courses that apply to filtered subjects
 app.post('/filterbysubject', function(req, res) {
   //var subject = req.body.subject
   var subjects = req.body.subjects;
@@ -214,7 +216,7 @@ app.post('/filterbysubject', function(req, res) {
        queryStr += "\nOR s.subject_name = \'" + subjects[i] + "\'";
     }
   }
-  queryStr += "\nORDER BY c.host_program ASC";
+  queryStr += "\nORDER BY c.host_program, c.host_course_number ASC";
   pool.query(queryStr,
   function(subjError, subjResult) {
     if(subjError) {
