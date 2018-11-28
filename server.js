@@ -201,6 +201,18 @@ app.get('/subjects', function(req, res) {
   });
 });
 
+app.get('/core', function(req, res) {
+  pool.query("SELECT * FROM core_designations", function(err, result) {
+    if(err) {
+      console.log("Cannot get core designations");
+      res.send(err);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+
 //get all the courses filtered by subject
 app.post('/filterbysubject', function(req, res) {
   //var subject = req.body.subject
