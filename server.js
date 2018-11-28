@@ -202,8 +202,8 @@ app.get('/subjects', function(req, res) {
   });
 });
 
-//SUBJECT FILTER
-//return programs with courses that apply to filtered subjects
+//SUBJECT FILTERS
+//return course equivalencies with GU courses that apply to subjects in filter
 app.post('/filterbysubject', function(req, res) {
   //var subject = req.body.subject
   var subjects = req.body.subjects;
@@ -223,6 +223,18 @@ app.post('/filterbysubject', function(req, res) {
       res.send(subjError);
     } else {
       res.send(subjResult);
+    }
+  });
+});
+
+//GET ALL CORE DESIGNATIONS 
+app.get('/core', function(req, res) {
+  pool.query("SELECT * FROM core_designations", function(err, result) {
+    if(err) {
+      console.log("Cannot get core designations");
+      res.send(err);
+    } else {
+      res.send(result);
     }
   });
 });
