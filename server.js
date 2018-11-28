@@ -201,23 +201,21 @@ app.get('/subjects', function(req, res) {
   });
 });
 
-//get all the core
-app.get('/core', function(req, res){
-  pool.query("SELECT * FROM core_designations", function(coreError, coreResult) {
-    if(coreError) {
-      console.log("cannot get core designations");
-      res.send(coreError);
-    } else {
-      res.send(coreResult);
-    }
-  })
-})
 //get all the courses filtered by subject
 app.post('/filterbysubject', function(req, res) {
-  var subject = req.body.subject;
-  pool.query("SELECT host_program, host_course_name, host_course_number, gu_course_name, gu_course_number " +
-  "FROM course_equivalencies c JOIN subjects s ON s.subject_name = ? WHERE (SUBSTRING(c.gu_course_number,1,4) = s.subject_code)",
-  [subject],
+  //var subject = req.body.subject
+  var subjects = req.body.subjects;
+  var queryStr = "SELECT c.host_program, c.host_course_name, c.host_course_number, c.gu_course_name, c.gu_course_number " +
+    "\nFROM course_equivalencies c " +
+    "\nINNER JOIN subjects s ON SUBSTRING(c.gu_course_number,1,4) = s.subject_code " +
+    "\nWHERE s.subject_name = \'" + subjects[0] + "\'";
+  if(subjects.length > 1) {
+    for(var i = 1; i < subjects.length; i++) {
+       queryStr += "\nOR s.subject_name = \'" + subjects[i] + "\'";
+    }
+  }
+  queryStr += "\nORDER BY c.host_program ASC";
+  pool.query(queryStr,
   function(subjError, subjResult) {
     if(subjError) {
       res.send(subjError);
