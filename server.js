@@ -167,7 +167,7 @@ app.post('/editcourse', function(req, res) {
 
 //GET ALL DEPARTMENTS
 app.get('/departments', function(req, res) {
-  pool.query("SELECT dept_code FROM departments", function(err, result) {
+  pool.query("SELECT dept_code FROM departments ORDER BY dept_code ASC", function(err, result) {
     if(err) {
       console.log("Cannot get departments");
       res.send(err);
@@ -179,7 +179,7 @@ app.get('/departments', function(req, res) {
 
 //GET ALL PROGRAMS
 app.get('/programs', function(req, res) {
-  pool.query("SELECT DISTINCT host_program FROM course_equivalencies", function(err, result) {
+  pool.query("SELECT DISTINCT host_program FROM course_equivalencies ORDER BY host_program ASC", function(err, result) {
     if(err) {
       console.log("Cannot get programs");
       res.send(err);
@@ -227,7 +227,7 @@ app.post('/filterbysubject', function(req, res) {
   });
 });
 
-//GET ALL CORE DESIGNATIONS 
+//GET ALL CORE DESIGNATIONS
 app.get('/core', function(req, res) {
   pool.query("SELECT * FROM core_designations", function(err, result) {
     if(err) {
