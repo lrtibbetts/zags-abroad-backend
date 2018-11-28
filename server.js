@@ -202,43 +202,52 @@ app.get('/subjects', function(req, res) {
 });
 
 //get all the courses that are in the department
-app.get('/departmentsfiltered', function(req, res) {
-  var department = req.body.department;
-  pool.query("SELECT host_program, host_course_name, host_course_number, gu_course_name, gu_course_number FROM course_equivalencies WHERE department = ?",
-  [department],
-  function (deptError, deptResult) {
-    if(deptError) {
-      console.log("Department doesn't exist");
-      res.send(editError);
-    } else {
-      console.log("Courses have been found");
-      res.send(deptResult);
-    }
-  });
-});
-
-//get all the programs filtered
-app.get('/programsfiltered', function(req, res) {
-  var program = req.body.program;
-  pool.query("SELECT host_program, host_course_name, host_course_number, gu_course_name, gu_course_number FROM course_equivalencies WHERE host_program = ?",
-  [program],
-  function(programError, programResult) {
-    if(programError) {
-      console.log("Program doesn't exist");
-      res.send(programError);
-    } else {
-      console.log("The program has been found: " + programResult);
-      res.send(programResult);
-    }
-  });
-});
+// app.get('/departmentsfiltered', function(req, res) {
+//   var department = req.body.department;
+//   pool.query("SELECT host_program, host_course_name, host_course_number, gu_course_name, gu_course_number FROM course_equivalencies WHERE department = ?",
+//   [department],
+//   function (deptError, deptResult) {
+//     if(deptError) {
+//       console.log("Department doesn't exist");
+//       res.send(editError);
+//     } else {
+//       console.log("Courses have been found");
+//       res.send(deptResult);
+//     }
+//   });
+// });
+//
+// //get all the programs filtered
+// app.get('/programsfiltered', function(req, res) {
+//   var program = req.body.program;
+//   pool.query("SELECT host_program, host_course_name, host_course_number, gu_course_name, gu_course_number FROM course_equivalencies WHERE host_program = ?",
+//   [program],
+//   function(programError, programResult) {
+//     if(programError) {
+//       console.log("Program doesn't exist");
+//       res.send(programError);
+//     } else {
+//       console.log("The program has been found: " + programResult);
+//       res.send(programResult);
+//     }
+//   });
+// });
 
 //get all the courses filtered by subject
 app.post('/filterbysubject', function(req, res) {
-  var subject = req.body.subject
-  pool.query("SELECT host_program, host_course_name, host_course_number, gu_course_name, gu_course_number " +
-  "FROM course_equivalencies c JOIN subjects s ON s.subject_name = ? WHERE (SUBSTRING(c.gu_course_number,1,4) = s.subject_code)",
-  [subject],
+  //var subject = req.body.subject
+  var subjects = req.body.subjects;
+  var queryStr = "SELECT c.host_program, c.host_course_name, c.host_course_number, c.gu_course_name, c.gu_course_number " +
+    "\nFROM course_equivalencies c " +
+    "\nINNER JOIN subjects s ON SUBSTRING(c.gu_course_number,1,4) = s.subject_code " +
+    "\nWHERE s.subject_name = \'" + subjects[0] + "\'";
+  if(subjects.length > 1) {
+    for(var i = 1; i < subjects.length; i++) {
+       queryStr += "\nOR s.subject_name = \'" + subjects[i] + "\'";
+    }
+  }
+  queryStr += "\nORDER BY c.host_program ASC";
+  pool.query(queryStr,
   function(subjError, subjResult) {
     if(subjError) {
       res.send(subjError);
