@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 //Port determined by Heroku, else default as localhost:3000
-var port = process.env.PORT || 3001;
+var port = process.env.PORT || 3001; 
 
 //Setting up params for DB connection to the SQL database
 //Using ClearDB to maintain database connection through Heroku server
