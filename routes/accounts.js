@@ -3,7 +3,7 @@ const express = require('express');
 
 const router = express.Router();
 console.log("account.js accessed")
-
+  
 //make sure to take into consideration the hard coding of the
 //admin value
 router.post('/signup', (req, res) => {
@@ -28,7 +28,7 @@ router.post('/signup', (req, res) => {
           }
         });
     }
-  }); 
+  });
 });
 
 // //LOGIN PAGE
