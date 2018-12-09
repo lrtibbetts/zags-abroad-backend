@@ -4,6 +4,7 @@ var server = require('../routes/courses');
 var assert = chai.assert;
 var expect = chai.expect;
 var should = chai.should();
+
 chai.use(chaiHttp);
 
 let edit_course_details = {
@@ -22,21 +23,20 @@ let edit_course_details = {
   department: ''
 };
 
-describe('Edit Course Tests', function() {
+describe('Edit Course Test', function() {
   var host = 'http://localhost:3001'
   var path = '/editcourse'
-  it('should modify a course equivalency on /editcourse POST', function(done) {
+  it('should modify a course equivalency POST', function(done) {
      chai.request(host).post(path).send(edit_course_details).end(function(error, response) {
-         //console.log(response.text)
-         assert.typeOf(response.text, 'string')
-         done();
-     })
-   })
+         assert.typeOf(response.text, 'string');
+     });
+     done();
+   });
 
-   it('should return \'affectedRows\':1', function(done) {
+   it('should return \'affectedRows\':1 POST', function(done) {
      chai.request(host).post(path).send(edit_course_details).end(function(error, response) {
-         expect(response.text).to.match(/(?:"affectedRows":1)/)
-         done();
-     })
-   })
+         expect(response.text).to.match(/(?:"affectedRows":1)/);
+     });
+     done();
+   });
 });

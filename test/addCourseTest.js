@@ -4,10 +4,8 @@ var server = require('../routes/courses');
 var assert = chai.assert;
 var expect = chai.expect;
 var should = chai.should();
-var request = require('request');
 
 chai.use(chaiHttp);
-
 
 let addCourse_details = {
   host_program: "b",
@@ -25,33 +23,31 @@ let addCourse_details = {
 };
 
 
-describe('addCourse', function() {
-  var host = 'http://localhost:3001'
-  var path = '/addcourse'
+describe('Add Course Test', function() {
+  var host = 'http://localhost:3001';
+  var path = '/addcourse';
 
-  it('should insert a unique account into the table with the correct information',
+  it('should insert a unique account into the table with the correct information POST',
    function(done) {
     chai.request(host).post(path).send(addCourse_details).end(function(error, response) {
         assert.typeOf(response.req.res.text, 'string')
-        done();
-    })
-  })
+    });
+    done();
+  });
 
-  it('should have affectedRows = 1',
+  it('should have affectedRows = 1 POST',
    function(done) {
     chai.request(host).post(path).send(addCourse_details).end(function(error, response) {
         expect(response.req.res.text).to.match(/(?:"affectedRows":1)/)
-        done();
-    })
-  })
+    });
+    done();
+  });
 
   it('should return the status code 200',
    function(done) {
     chai.request(host).post(path).send(addCourse_details).end(function(error, response, body) {
       expect(response.statusCode).to.equal(200);
-      done();
-    })
-  })
-
-
+    });
+    done();
+  });
 });
