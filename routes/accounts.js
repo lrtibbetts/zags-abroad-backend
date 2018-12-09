@@ -24,6 +24,7 @@ module.exports = {
               res.send("User already exists");
             } else {
               res.send(queryResult);
+              console.log(queryResult)
             }
           });
       }

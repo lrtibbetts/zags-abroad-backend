@@ -8,7 +8,8 @@ module.exports = {
         console.log("Cannot get core designations");
         res.send(err);
       } else {
-        res.send(result);
+        res.send(result)
+        //res.send(JSON.stringify({result}));
       }
     });
   }
