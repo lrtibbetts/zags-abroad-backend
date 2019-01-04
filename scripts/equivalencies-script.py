@@ -6,7 +6,7 @@ from pymysql import cursors
 from datetime import datetime
 
 #opens the workbook and references the spreadsheet
-book = xlrd.open_workbook('sponsored_2018.xlsx')
+book = xlrd.open_workbook('../spreadsheets/sponsored_2018.xlsx')
 sheet = book.sheet_by_index(0)
 
 #connect to the database

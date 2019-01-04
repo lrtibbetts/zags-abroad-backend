@@ -5,7 +5,7 @@ from pymysql import cursors
 
 #opens the workbook and references the spreadsheet
 #add a file path
-book = xlrd.open_workbook('sponsored_2018.xlsx')
+book = xlrd.open_workbook('../spreadsheets/sponsored_2018.xlsx')
 sheet = book.sheet_by_index(3)
 
 #connect to the database
