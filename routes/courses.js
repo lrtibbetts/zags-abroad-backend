@@ -94,7 +94,7 @@ module.exports = {
   filterBySubject(req, res) {
     //var subject = req.body.subject
     var subjects = req.body.subjects;
-    var queryStr = "SELECT c.host_program, c.host_course_name, c.host_course_number, c.gu_course_name, c.gu_course_number " +
+    var queryStr = "SELECT c.host_program, c.host_course_name, c.host_course_number, c.gu_course_name, c.gu_course_number, c.signature_needed" +
       "\nFROM course_equivalencies c " +
       "\nINNER JOIN subjects s ON SUBSTRING(c.gu_course_number,1,4) = s.subject_code " +
       "\nWHERE s.subject_name = \'" + subjects[0] + "\'";
@@ -103,7 +103,7 @@ module.exports = {
          queryStr += "\nOR s.subject_name = \'" + subjects[i] + "\'";
       }
     }
-    queryStr += "\nORDER BY c.host_program, c.host_course_number ASC";
+    queryStr += "\nORDER BY c.host_program, c.gu_course_number ASC";
     pool.query(queryStr,
     function(subjError, subjResult) {
       if(subjError) {
