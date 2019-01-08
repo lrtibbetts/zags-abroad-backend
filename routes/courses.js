@@ -96,10 +96,8 @@ module.exports = {
     var queryStr = "SELECT c.host_program, c.host_course_name, c.host_course_number, c.gu_course_name, c.gu_course_number, c.signature_needed" +
       " FROM course_equivalencies c JOIN subjects s ON SUBSTRING(c.gu_course_number,1,4) = s.subject_code " +
       " WHERE s.subject_name = \'" + subjects[0] + "\'";
-    if(subjects.length > 1) {
-      for(var i = 1; i < subjects.length; i++) {
-         queryStr += "\nOR s.subject_name = \'" + subjects[i] + "\'";
-      }
+    for(var i = 1; i < subjects.length; i++) {
+      queryStr += "\nOR s.subject_name = \'" + subjects[i] + "\'";
     }
     queryStr += "\nORDER BY c.host_program, c.gu_course_number ASC";
     pool.query(queryStr,
