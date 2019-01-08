@@ -89,23 +89,21 @@ module.exports = {
     });
   },
 
-  //SUBJECT FILTERS
-  //return course equivalencies with GU courses that apply to subjects in filter
+  // SUBJECT FILTERS
+  // Return course equivalencies with GU courses that match filter(s)
   filterBySubject(req, res) {
     var subjects = req.body.subjects;
-    var queryStr = "SELECT c.host_program, c.host_course_name, c.host_course_number, c.gu_course_name, c.gu_course_number, c.signature_needed" +
-      " FROM course_equivalencies c JOIN subjects s ON SUBSTRING(c.gu_course_number,1,4) = s.subject_code " +
-      " WHERE s.subject_name = \'" + subjects[0] + "\'";
+    var queryStr = "SELECT host_program, host_course_name, host_course_number, gu_course_name, gu_course_number, signature_needed" +
+      " FROM course_equivalencies WHERE SUBSTRING(gu_course_number,1,4) = \'" + subjects[0] + "\'";
     for(var i = 1; i < subjects.length; i++) {
-      queryStr += "\nOR s.subject_name = \'" + subjects[i] + "\'";
+      queryStr += " OR SUBSTRING(gu_course_number,1,4) = \'" + subjects[i] + "\'";
     }
-    queryStr += "\nORDER BY c.host_program, c.gu_course_number ASC";
-    pool.query(queryStr,
-    function(subjError, subjResult) {
-      if(subjError) {
-        res.send(subjError);
+    queryStr += " ORDER BY host_program, gu_course_number ASC";
+    pool.query(queryStr, function(err, result) {
+      if(err) {
+        res.send(err);
       } else {
-        res.send(subjResult);
+        res.send(result);
       }
     });
   }
