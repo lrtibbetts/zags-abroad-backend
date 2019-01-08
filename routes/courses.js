@@ -92,12 +92,10 @@ module.exports = {
   //SUBJECT FILTERS
   //return course equivalencies with GU courses that apply to subjects in filter
   filterBySubject(req, res) {
-    //var subject = req.body.subject
     var subjects = req.body.subjects;
     var queryStr = "SELECT c.host_program, c.host_course_name, c.host_course_number, c.gu_course_name, c.gu_course_number, c.signature_needed" +
-      "\nFROM course_equivalencies c " +
-      "\nINNER JOIN subjects s ON SUBSTRING(c.gu_course_number,1,4) = s.subject_code " +
-      "\nWHERE s.subject_name = \'" + subjects[0] + "\'";
+      " FROM course_equivalencies c JOIN subjects s ON SUBSTRING(c.gu_course_number,1,4) = s.subject_code " +
+      " WHERE s.subject_name = \'" + subjects[0] + "\'";
     if(subjects.length > 1) {
       for(var i = 1; i < subjects.length; i++) {
          queryStr += "\nOR s.subject_name = \'" + subjects[i] + "\'";
