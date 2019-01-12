@@ -24,7 +24,7 @@ for r in range(1, sheet.nrows):
     program_type = ""
     host_url = ""
     application_link = ""
-    city = ""
+    city = sheet.cell(r, 4).value
     country = ""
 
     values = (host_program, program_type, host_url, application_link, city, country)
