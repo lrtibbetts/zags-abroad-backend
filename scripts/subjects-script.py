@@ -28,7 +28,6 @@ for r in range(1, sheet.nrows):
     cursor.execute(query, values)
     print(values)
 
-cursor = connection.cursor()
 cursor.close()
 connection.commit()
 connection.close()
