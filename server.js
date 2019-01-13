@@ -19,6 +19,7 @@ const port = process.env.PORT || 3001;
 app.get('/core', core.getCore);
 app.get('/subjects', subjects.getSubjects);
 app.get('/programs', programs.getPrograms);
+app.get('/cities', programs.getCities);
 app.get('/departments', departments.getDepartments);
 app.get('/courses', courses.getCourses);
 app.post('/addcourse', courses.addCourse);

@@ -11,5 +11,16 @@ module.exports = {
         res.send(programResult);
       }
     });
+  },
+
+  getCities(req, res) {
+    pool.query("SELECT host_program, city FROM programs", function(err, result) {
+      if(err) {
+        res.send(err);
+      } else {
+        res.send(result);
+      }
+    });
   }
+
 };
