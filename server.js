@@ -4,6 +4,7 @@ const programs = require('./routes/programs.js');
 const departments = require('./routes/departments.js');
 const courses = require('./routes/courses.js');
 const accounts = require('./routes/accounts.js');
+const survey = require('./routes/survey.js');
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -28,7 +29,8 @@ app.post('/editcourse', courses.editCourse);
 app.post('/filterbysubject', courses.filterBySubject);
 app.post('/login', accounts.logIn);
 app.post('/signup', accounts.signUp);
-
+app.post('/submitsurvey', survey.submitSurvey);
+ 
 app.listen(port, function() {
     console.log('Listening on port ' + port);
 });
