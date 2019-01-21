@@ -20,7 +20,7 @@ describe('Delete Course Test', function() {
    function(done) {
     chai.request(host).post(path).send(deleteCourse_details).end(function(error, response) {
         if (response.req.res.text != 'Course does not exist') {
-          expect(response.request._data.id).to.equal(deleteCourse_details.id)
+          expect(response.request._data.id).to.equal(deleteCourse_details.id);
         }
     });
     done();
