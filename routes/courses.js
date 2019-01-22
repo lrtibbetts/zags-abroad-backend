@@ -15,6 +15,20 @@ module.exports = {
       });
   },
 
+  //COURSES OF A GIVEN PROGRAM
+  programCourses(req, res) {
+    var program = req.body.program;
+    pool.query("SELECT host_program, host_course_name, host_course_number, gu_course_name, gu_course_number, signature_needed" +
+      " FROM course_equivalencies WHERE host_program = ?", [program],
+    function(queryError, queryResult) {
+      if(queryError) {
+        res.send(queryError);
+      } else {
+        res.send(queryResult);
+      }
+    });
+  },
+
   //ADD A COURSE TO THE EQUIVALENCY TABLE
   //allows admin to add courses to the course equivalency table
   addCourse(req, res) {
@@ -99,6 +113,24 @@ module.exports = {
       queryStr += " OR SUBSTRING(gu_course_number,1,4) = \'" + subjects[i] + "\'";
     }
     queryStr += " ORDER BY host_program, gu_course_number ASC";
+    pool.query(queryStr, function(err, result) {
+      if(err) {
+        res.send(err);
+      } else {
+        res.send(result);
+      }
+    });
+  },
+
+  filterByProgramAndSubject(req, res) {
+    var program = req.body.program;
+    var subjects = req.body.subjects;
+    var queryStr = "SELECT host_program, host_course_name, host_course_number, gu_course_name, gu_course_number, signature_needed" +
+      " FROM course_equivalencies WHERE host_program =  \'" + program + "\' AND (SUBSTRING(gu_course_number,1,4) = \'" + subjects[0] + "\'";
+    for(var i = 1; i < subjects.length; i++) {
+      queryStr += " OR SUBSTRING(gu_course_number,1,4) = \'" + subjects[i] + "\'";
+    }
+    queryStr += ") ORDER BY gu_course_number ASC";
     pool.query(queryStr, function(err, result) {
       if(err) {
         res.send(err);

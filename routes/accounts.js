@@ -38,7 +38,8 @@ module.exports = {
   logIn(req, res) {
       var email = req.body.email;
       var password = req.body.password;
-      pool.query("SELECT * FROM accounts WHERE email = ?", [email], function (queryError, queryResult) {
+      pool.query("SELECT * FROM accounts WHERE email = ?", [email],
+        function (queryError, queryResult) {
           if(queryError) {
             res.send(queryError);
           } else if(queryResult.length > 0) {
