@@ -5,7 +5,7 @@ module.exports = {
   //this selects all of the courses
   //we are selecting all the columns but will only show a few important row
   getCourses(req, res) {
-      pool.query("SELECT * FROM course_equivalencies",
+      pool.query("SELECT * FROM course_equivalencies ORDER BY host_program, gu_course_number ASC",
       function(queryError, queryResult) {
         if(queryError) {
           res.send(queryError);
@@ -19,7 +19,7 @@ module.exports = {
   programCourses(req, res) {
     var program = req.body.program;
     pool.query("SELECT host_program, host_course_name, host_course_number, gu_course_name, gu_course_number, signature_needed" +
-      " FROM course_equivalencies WHERE host_program = ?", [program],
+      " FROM course_equivalencies WHERE host_program = ? ORDER BY gu_course_number ASC", [program],
     function(queryError, queryResult) {
       if(queryError) {
         res.send(queryError);
