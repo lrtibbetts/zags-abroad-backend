@@ -15,6 +15,7 @@ module.exports = {
       });
   },
 
+  //GET SUBJECTS OF A PROGRAM 
   programSubjects(req, res) {
     var program = req.body.program;
     pool.query("SELECT DISTINCT s.subject_name, s.subject_code FROM subjects s JOIN course_equivalencies c " +

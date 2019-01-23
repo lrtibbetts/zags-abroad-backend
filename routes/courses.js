@@ -103,8 +103,8 @@ module.exports = {
     });
   },
 
-  // SUBJECT FILTERS
-  // Return course equivalencies with GU courses that match filter(s)
+  //SUBJECT FILTERS
+  //Return course equivalencies with GU courses that match filter(s)
   filterBySubject(req, res) {
     var subjects = req.body.subjects;
     var queryStr = "SELECT host_program, host_course_name, host_course_number, gu_course_name, gu_course_number, signature_needed" +
@@ -122,6 +122,8 @@ module.exports = {
     });
   },
 
+  //SUBJECT FILTERS FOR A Programs
+  //Return course equivalencies with GU courses that match filters 
   filterByProgramAndSubject(req, res) {
     var program = req.body.program;
     var subjects = req.body.subjects;
