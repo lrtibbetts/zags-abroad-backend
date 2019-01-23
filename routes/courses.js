@@ -18,7 +18,7 @@ module.exports = {
   //COURSES OF A GIVEN PROGRAM
   programCourses(req, res) {
     var program = req.body.program;
-    pool.query("SELECT host_program, host_course_name, host_course_number, gu_course_name, gu_course_number, signature_needed" +
+    pool.query("SELECT id, host_program, host_course_name, host_course_number, gu_course_name, gu_course_number, signature_needed" +
       " FROM course_equivalencies WHERE host_program = ? ORDER BY gu_course_number ASC", [program],
     function(queryError, queryResult) {
       if(queryError) {
@@ -127,7 +127,7 @@ module.exports = {
   filterByProgramAndSubject(req, res) {
     var program = req.body.program;
     var subjects = req.body.subjects;
-    var queryStr = "SELECT host_program, host_course_name, host_course_number, gu_course_name, gu_course_number, signature_needed" +
+    var queryStr = "SELECT id, host_program, host_course_name, host_course_number, gu_course_name, gu_course_number, signature_needed" +
       " FROM course_equivalencies WHERE host_program =  \'" + program + "\' AND (SUBSTRING(gu_course_number,1,4) = \'" + subjects[0] + "\'";
     for(var i = 1; i < subjects.length; i++) {
       queryStr += " OR SUBSTRING(gu_course_number,1,4) = \'" + subjects[i] + "\'";
