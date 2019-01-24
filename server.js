@@ -36,6 +36,7 @@ app.post('/signup', accounts.signUp);
 app.post('/submitsurvey', survey.submitSurvey);
 app.post('/savecourse', saved_courses.saveCourse);
 app.post('/accountcourses', saved_courses.accountCourses);
+app.post('/deleteaccountcourse', saved_courses.deleteAccountCourse);
 
 app.listen(port, function() {
     console.log('Listening on port ' + port);

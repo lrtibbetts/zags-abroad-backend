@@ -17,6 +17,18 @@ module.exports = {
       });
   },
 
+  deleteAccountCourse(req, res) {
+    var id = req.body.id;
+    var email = req.body.email;
+    pool.query("DELETE FROM saved_courses WHERE course_id = ? AND email = ?", [id, email], function(err, result) {
+      if(err) {
+        res.send(err);
+      } else {
+        res.send(result);
+      }
+    });
+  },
+
   //MY ACCOUNT Courses
   accountCourses(req, res) {
     var email = req.body.email;
