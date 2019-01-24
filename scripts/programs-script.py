@@ -17,7 +17,7 @@ connection = pymysql.connect(host = 'us-cdbr-iron-east-01.cleardb.net',
 print ("Connection!")
 
 cursor = connection.cursor()
-query = """INSERT INTO programs(host_program, program_type, host_url, application_link, city, country) VALUES(%s, %s, %s, %s, %s, %s)"""
+query = """INSERT INTO programs(host_program, program_type, host_url, application_link, city, lat, lng) VALUES(%s, %s, %s, %s, %s, %s, %s)"""
 
 for r in range(1, sheet.nrows):
     host_program = sheet.cell(r,0).value
@@ -25,9 +25,10 @@ for r in range(1, sheet.nrows):
     host_url = ""
     application_link = ""
     city = sheet.cell(r, 4).value
-    country = ""
+    lat = sheet.cell(r, 5).value
+    lng = sheet.cell(r, 6).value
 
-    values = (host_program, program_type, host_url, application_link, city, country)
+    values = (host_program, program_type, host_url, application_link, city, lat, lng)
 
     cursor.execute(query, values)
     print(values)
