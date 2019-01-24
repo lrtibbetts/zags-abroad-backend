@@ -14,8 +14,8 @@ module.exports = {
       });
   },
 
-  getCities(req, res) {
-    pool.query("SELECT host_program, city FROM programs",
+  getLocations(req, res) {
+    pool.query("SELECT host_program, city, lat, lng FROM programs",
       function(err, result) {
         if(err) {
           res.send(err);
