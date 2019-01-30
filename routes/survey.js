@@ -13,7 +13,7 @@ module.exports = {
     var classes = req.body.classes
     var activities = req.body.activities
     var other = req.body.other
-    var name = req.body.last_name
+    var name = req.body.name
     var email = req.body.email
 
     pool.query("INSERT INTO survey (major, program, year, term, residence, trips, classes, activities, other, name, email) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
@@ -27,5 +27,5 @@ module.exports = {
         res.send(result);
       }
     });
-  }   
+  }
 }
