@@ -107,13 +107,9 @@ module.exports = {
   //Return course equivalencies with GU courses that match filter(s)
   filterBySubject(req, res) {
     var subjects = req.body.subjects;
-    var queryStr = "SELECT host_program, host_course_name, host_course_number, gu_course_name, gu_course_number, signature_needed" +
-      " FROM course_equivalencies WHERE SUBSTRING(gu_course_number,1,4) = \'" + subjects[0] + "\'";
-    for(var i = 1; i < subjects.length; i++) {
-      queryStr += " OR SUBSTRING(gu_course_number,1,4) = \'" + subjects[i] + "\'";
-    }
-    queryStr += " ORDER BY host_program, gu_course_number ASC";
-    pool.query(queryStr, function(err, result) {
+    pool.query("SELECT host_program, host_course_name, host_course_number, gu_course_name, gu_course_number, signature_needed" +
+      " FROM course_equivalencies WHERE SUBSTRING(gu_course_number,1,4) IN (?) ORDER BY host_program, gu_course_number ASC",
+      [subjects], function(err, result) {
       if(err) {
         res.send(err);
       } else {
@@ -123,17 +119,13 @@ module.exports = {
   },
 
   //SUBJECT FILTERS FOR A Programs
-  //Return course equivalencies with GU courses that match filters 
+  //Return course equivalencies with GU courses that match filters
   filterByProgramAndSubject(req, res) {
     var program = req.body.program;
     var subjects = req.body.subjects;
-    var queryStr = "SELECT id, host_program, host_course_name, host_course_number, gu_course_name, gu_course_number, signature_needed" +
-      " FROM course_equivalencies WHERE host_program =  \'" + program + "\' AND (SUBSTRING(gu_course_number,1,4) = \'" + subjects[0] + "\'";
-    for(var i = 1; i < subjects.length; i++) {
-      queryStr += " OR SUBSTRING(gu_course_number,1,4) = \'" + subjects[i] + "\'";
-    }
-    queryStr += ") ORDER BY gu_course_number ASC";
-    pool.query(queryStr, function(err, result) {
+    pool.query("SELECT id, host_program, host_course_name, host_course_number, gu_course_name, gu_course_number, signature_needed" +
+      " FROM course_equivalencies WHERE host_program = ? AND (SUBSTRING(gu_course_number,1,4) IN (?) ORDER BY gu_course_number ASC",
+      [program, subjects], function(err, result) {
       if(err) {
         res.send(err);
       } else {
