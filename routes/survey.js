@@ -15,9 +15,10 @@ module.exports = {
     var other = req.body.other
     var name = req.body.name
     var email = req.body.email
+    var staff = req.body.staff
 
-    pool.query("INSERT INTO survey (major, program, year, term, residence, trips, classes, activities, other, name, email) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
-    [major, program, year, term, residence, trips, classes, activities, other, name, email],
+    pool.query("INSERT INTO survey (major, program, term, year, residence, trips, classes, activities, other, name, email, staff) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
+    [major, program, term, year, residence, trips, classes, activities, other, name, email, staff],
     function(error, result) {
       if(error) {
         console.log(error);
