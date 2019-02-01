@@ -105,20 +105,51 @@ module.exports = {
 
   //SUBJECT FILTERS
   //Return course equivalencies with GU courses that match filter(s)
-  filterBySubject(req, res) {
+  filterBySubjectAndCore(req, res) {
     var subjects = req.body.subjects;
-    pool.query("SELECT host_program, host_course_name, host_course_number, gu_course_name, gu_course_number, signature_needed" +
-      " FROM course_equivalencies WHERE SUBSTRING(gu_course_number,1,4) IN (?) ORDER BY host_program, gu_course_number ASC",
-      [subjects], function(err, result) {
-      if(err) {
-        res.send(err);
-      } else {
-        res.send(result);
+    var core = req.body.core;
+    if(core.length === 0) {
+      pool.query("SELECT host_program, host_course_name, host_course_number, gu_course_name, gu_course_number, signature_needed, core" +
+        " FROM course_equivalencies WHERE SUBSTRING(gu_course_number,1,4) IN (?) ORDER BY host_program, gu_course_number ASC",
+        [subjects, core], function(err, result) {
+        if(err) {
+          res.send(err);
+        } else {
+          res.send(result);
+        }
+      });
+    } else if(subjects.length === 0) {
+      var str = "SELECT host_program, host_course_name, host_course_number, gu_course_name, gu_course_number, signature_needed, core" +
+        " FROM course_equivalencies WHERE core LIKE '%" + core[0] + ",%'";
+      for(var i = 1; i < subjects.length; i++) {
+        str += " OR core LIKE '%" + core[i] + ",%'";
       }
-    });
+      str += " ORDER BY host_program, gu_course_number ASC";
+      pool.query(str, function(err, result) {
+        if(err) {
+          res.send(err);
+        } else {
+          res.send(result);
+        }
+      });
+    } else {
+      var str = "SELECT host_program, host_course_name, host_course_number, gu_course_name, gu_course_number, signature_needed, core" +
+        " FROM course_equivalencies WHERE SUBSTRING(gu_course_number,1,4) IN (?) OR core LIKE '%" + core[0] + ",%'";
+      for(var i = 1; i < subjects.length; i++) {
+        str += " OR core LIKE '%" + core[i] + ",%'";
+      }
+      str += " ORDER BY host_program, gu_course_number ASC";
+      pool.query(str, [subjects, core[0]], function(err, result) {
+        if(err) {
+          res.send(err);
+        } else {
+          res.send(result);
+        }
+      });
+    }
   },
 
-  //SUBJECT FILTERS FOR A Programs
+  //SUBJECT FILTERS FOR PROGRAMS
   //Return course equivalencies with GU courses that match filters
   filterByProgramAndSubject(req, res) {
     var program = req.body.program;
