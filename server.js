@@ -29,7 +29,7 @@ app.post('/programcourses', courses.programCourses);
 app.post('/addcourse', courses.addCourse);
 app.post('/deletecourse', courses.deleteCourse);
 app.post('/editcourse', courses.editCourse);
-app.post('/filterbysubject', courses.filterBySubject);
+app.post('/filterbysubjectcore', courses.filterBySubjectAndCore);
 app.post('/filterbyprogramsubject', courses.filterByProgramAndSubject);
 app.post('/login', accounts.logIn);
 app.post('/signup', accounts.signUp);
