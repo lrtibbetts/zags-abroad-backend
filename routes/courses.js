@@ -18,7 +18,7 @@ module.exports = {
   //COURSES OF A GIVEN PROGRAM
   programCourses(req, res) {
     var program = req.body.program;
-    pool.query("SELECT id, host_program, host_course_name, host_course_number, gu_course_name, gu_course_number, signature_needed" +
+    pool.query("SELECT id, host_program, host_course_name, host_course_number, gu_course_name, gu_course_number, signature_needed, core" +
       " FROM course_equivalencies WHERE host_program = ? ORDER BY gu_course_number ASC", [program],
     function(queryError, queryResult) {
       if(queryError) {
