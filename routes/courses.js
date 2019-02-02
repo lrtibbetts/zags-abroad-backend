@@ -145,7 +145,7 @@ module.exports = {
     var subjects = req.body.subjects;
     var core = req.body.core;
     if(core.length === 0) {
-      pool.query("SELECT id, host_program, host_course_name, host_course_number, gu_course_name, gu_course_number, signature_needed" +
+      pool.query("SELECT id, host_program, host_course_name, host_course_number, gu_course_name, gu_course_number, signature_needed, core" +
         " FROM course_equivalencies WHERE host_program = ? AND SUBSTRING(gu_course_number,1,4) IN (?) ORDER BY gu_course_number ASC",
         [program, subjects], function(err, result) {
         if(err) {
@@ -163,8 +163,8 @@ module.exports = {
       if(subjects.length > 0) {
         str += " OR SUBSTRING(gu_course_number,1,4) IN (?)";
       }
-      str += " ORDER BY host_program, gu_course_number ASC";
-      pool.query(str, subjects, function(err, result) {
+      str += " ORDER BY gu_course_number ASC";
+      pool.query(str, [program, subjects], function(err, result) {
         if(err) {
           res.send(err);
         } else {
