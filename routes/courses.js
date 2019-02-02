@@ -156,14 +156,14 @@ module.exports = {
       });
     } else {
       var str = "SELECT host_program, host_course_name, host_course_number, gu_course_name, gu_course_number, signature_needed, core" +
-        " FROM course_equivalencies WHERE host_program = ? AND core LIKE '%" + core[0] + ",%'";
+        " FROM course_equivalencies WHERE host_program = ? AND (core LIKE '%" + core[0] + ",%'";
       for(var i = 1; i < core.length; i++) {
         str += " OR core LIKE '%" + core[i] + ",%'";
       }
       if(subjects.length > 0) {
         str += " OR SUBSTRING(gu_course_number,1,4) IN (?)";
       }
-      str += " ORDER BY gu_course_number ASC";
+      str += ") ORDER BY gu_course_number ASC";
       pool.query(str, [program, subjects], function(err, result) {
         if(err) {
           res.send(err);
