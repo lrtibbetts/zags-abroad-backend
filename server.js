@@ -19,6 +19,7 @@ app.use(cors());
 const port = process.env.PORT || 3001;
 
 app.get('/core', core.getCore);
+app.get('/programCore', core.programCore);
 app.get('/subjects', subjects.getSubjects);
 app.post('/programsubjects', subjects.programSubjects);
 app.get('/programs', programs.getPrograms);
