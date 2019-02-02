@@ -16,15 +16,18 @@ module.exports = {
   //GET CORE OF A PROGRAM
   coreSubjects(req, res) {
     var program = req.body.program;
-    pool.query("SELECT DISTINCT s.subject_name, s.subject_code FROM subjects s JOIN course_equivalencies c " +
-    "WHERE s.subject_code = SUBSTRING(gu_course_number, 1, 4) AND c.host_program = ? ORDER BY s.subject_name ASC", [program],
-      function(queryError, queryResult) {
-        if(queryError) {
-          console.log("Cannot get subjects for program: " + program);
-          res.send(queryError);
-        } else {
-          res.send(queryResult);
-        }
-      });
+    var core = getCore(req.body.program);
+    console.log(core);
+    res.send(core);
+    // pool.query("SELECT DISTINCT c.core_name FROM core c JOIN course_equivalencies e " +
+    // "WHERE e.core LIKE '%c.core_name,%' LIKE AND e.host_program = ? ORDER BY c.core_name ASC", [program],
+    //   function(queryError, queryResult) {
+    //     if(queryError) {
+    //       console.log("Cannot get core for program: " + program);
+    //       res.send(queryError);
+    //     } else {
+    //       res.send(queryResult);
+    //     }
+    //   });
   }
 };
