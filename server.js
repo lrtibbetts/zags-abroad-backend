@@ -6,7 +6,7 @@ const courses = require('./routes/courses.js');
 const accounts = require('./routes/accounts.js');
 const survey = require('./routes/survey.js');
 const saved_courses = require('./routes/saved_courses.js');
-
+const photos = require('./routes/photos.js');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -30,14 +30,15 @@ app.post('/programcourses', courses.programCourses);
 app.post('/addcourse', courses.addCourse);
 app.post('/deletecourse', courses.deleteCourse);
 app.post('/editcourse', courses.editCourse);
-app.post('/filterbysubjectcore', courses.filterBySubjectAndCore);
-app.post('/filterbyprogramsubject', courses.filterByProgramAndSubject);
+app.post('/mainsearch', courses.mainSearch);
+app.post('/detailsearch', courses.detailSearch);
 app.post('/login', accounts.logIn);
 app.post('/signup', accounts.signUp);
 app.post('/submitsurvey', survey.submitSurvey);
 app.post('/savecourse', saved_courses.saveCourse);
 app.post('/accountcourses', saved_courses.accountCourses);
 app.post('/deleteaccountcourse', saved_courses.deleteAccountCourse);
+app.post('/photos', photos.submitPhotos);
 
 app.listen(port, function() {
     console.log('Listening on port ' + port);
