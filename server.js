@@ -25,6 +25,7 @@ app.get('/programs', programs.getPrograms);
 app.get('/locations', programs.getLocations);
 app.get('/departments', departments.getDepartments);
 app.get('/courses', courses.getCourses);
+app.get('/programPhotos', photos.getProgramPhotos);
 app.post('/programcourses', courses.programCourses);
 app.post('/addcourse', courses.addCourse);
 app.post('/deletecourse', courses.deleteCourse);
