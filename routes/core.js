@@ -13,24 +13,6 @@ module.exports = {
     });
   },
 
-<<<<<<< HEAD
-  //GET CORE OF A PROGRAM
-  coreSubjects(req, res) {
-    var program = req.body.program;
-    var core = getCore(req.body.program);
-    console.log(core);
-    res.send(core);
-    // pool.query("SELECT DISTINCT c.core_name FROM core c JOIN course_equivalencies e " +
-    // "WHERE e.core LIKE '%c.core_name,%' LIKE AND e.host_program = ? ORDER BY c.core_name ASC", [program],
-    //   function(queryError, queryResult) {
-    //     if(queryError) {
-    //       console.log("Cannot get core for program: " + program);
-    //       res.send(queryError);
-    //     } else {
-    //       res.send(queryResult);
-    //     }
-    //   });
-=======
   programCore(req, res) {
     var program = req.body.program;
     pool.query("SELECT DISTINCT c.core_name FROM core_designations c JOIN course_equivalencies e" +
@@ -41,6 +23,5 @@ module.exports = {
         res.send(result);
       }
     });
->>>>>>> 1defa5ae922dbb96b8172f060bced84004b26c01
   }
 };
