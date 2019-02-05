@@ -6,7 +6,7 @@ from pymysql import cursors
 from datetime import datetime
 
 #opens the workbook and references the spreadsheet
-book = xlrd.open_workbook('../spreadsheets/sponsored_2018.xlsx')
+book = xlrd.open_workbook('../spreadsheets/sponsored_2019.xlsx')
 sheet = book.sheet_by_index(0)
 
 #connect to the database
@@ -22,7 +22,7 @@ cursor = connection.cursor()
 query = """INSERT INTO course_equivalencies(host_program, host_course_number, host_course_name,
 gu_course_number, gu_course_name, core, comments, signature_needed, approved_by, approval_date, approved_until, department) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
 
-for r in range(0, sheet.nrows):
+for r in range(1, sheet.nrows):
     host_program = sheet.cell(r,0).value
     host_course_number = sheet.cell(r,1).value
     host_course_name = sheet.cell(r,2).value
