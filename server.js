@@ -19,13 +19,18 @@ app.use(cors());
 const port = process.env.PORT || 3001;
 
 app.get('/core', core.getCore);
+<<<<<<< HEAD
 app.get('/programCore', core.programCore);
+=======
+app.post('/programcore', core.programCore);
+>>>>>>> 1defa5ae922dbb96b8172f060bced84004b26c01
 app.get('/subjects', subjects.getSubjects);
 app.post('/programsubjects', subjects.programSubjects);
 app.get('/programs', programs.getPrograms);
 app.get('/locations', programs.getLocations);
 app.get('/departments', departments.getDepartments);
 app.get('/courses', courses.getCourses);
+app.get('/programPhotos', photos.getProgramPhotos);
 app.post('/programcourses', courses.programCourses);
 app.post('/addcourse', courses.addCourse);
 app.post('/deletecourse', courses.deleteCourse);
@@ -39,6 +44,7 @@ app.post('/savecourse', saved_courses.saveCourse);
 app.post('/accountcourses', saved_courses.accountCourses);
 app.post('/deleteaccountcourse', saved_courses.deleteAccountCourse);
 app.post('/photos', photos.submitPhotos);
+app.post('/programphotos', photos.getProgramPhotos);
 
 app.listen(port, function() {
     console.log('Listening on port ' + port);

@@ -13,6 +13,7 @@ module.exports = {
     });
   },
 
+<<<<<<< HEAD
   //GET CORE OF A PROGRAM
   coreSubjects(req, res) {
     var program = req.body.program;
@@ -29,5 +30,17 @@ module.exports = {
     //       res.send(queryResult);
     //     }
     //   });
+=======
+  programCore(req, res) {
+    var program = req.body.program;
+    pool.query("SELECT DISTINCT c.core_name FROM core_designations c JOIN course_equivalencies e" +
+    " WHERE e.host_program = ? AND e.core LIKE CONCAT('%', c.core_name, ',%')", [program], function(err, result) {
+      if(err) {
+        res.send(err);
+      } else {
+        res.send(result);
+      }
+    });
+>>>>>>> 1defa5ae922dbb96b8172f060bced84004b26c01
   }
 };
