@@ -4,21 +4,22 @@ module.exports = {
   // here, we want to store the information that
   // the student inputs into the curvey
   submitSurvey(req, res) {
+    var name = req.body.name;
+    var email = req.body.email;
     var major = req.body.major;
     var program = req.body.program;
-    var year = req.body.year;
     var term = req.body.term;
+    var calendar_year = req.body.calendar_year;
+    var year = req.body.year;
     var residence = req.body.residence;
     var trips = req.body.trips;
     var classes = req.body.classes;
     var activities = req.body.activities;
-    var other = req.body.other;
-    var name = req.body.name;
-    var email = req.body.email;
     var staff = req.body.staff;
+    var other = req.body.other;
 
-    pool.query("INSERT INTO survey (major, program, term, year, residence, trips, classes, activities, other, name, email, staff) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
-    [major, program, term, year, residence, trips, classes, activities, other, name, email, staff],
+    pool.query("INSERT INTO survey (name, email, major, program, term, calendar_year, year, residence, trips, classes, activities, staff, other) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+    [name, email, major, program, term, calendar_year, year, residence, trips, classes, activities, staff, other],
     function(queryError, queryResult) {
       if(queryError) {
         console.log(queryError);
