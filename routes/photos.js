@@ -7,9 +7,9 @@ module.exports = {
     var url = req.body.url;
     var height = req.body.height;
     var width = req.body.width;
-
-    pool.query("INSERT INTO photos (program, url, height, width) VALUES (?,?,?,?)",
-    [program, url, height, width],
+    var survey_id = req.body.survey_id;
+    pool.query("INSERT INTO photos (program, url, survey_id, height, width) VALUES (?,?,?,?,?)",
+    [program, url, survey_id, height, width],
     function(error, result) {
       if(error) {
         console.log(error);
