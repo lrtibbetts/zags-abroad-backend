@@ -26,12 +26,12 @@ module.exports = {
     pool.query("SELECT url, height, width FROM photos WHERE program = ?", [program], function(error, result) {
       if (error) {
         console.log(error);
-        res.send(error;
+        res.send(error);
       } else {
         console.log(program);
         res.send(result);
       }
-    })
+    });
   },
 
   getSurveyPhotos(req, res) {
@@ -43,6 +43,6 @@ module.exports = {
       } else {
         res.send(result);
       }
-    })
+    });
   }
 }
