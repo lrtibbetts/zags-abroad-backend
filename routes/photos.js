@@ -15,7 +15,7 @@ module.exports = {
         console.log(error);
         res.send(error);
       } else {
-        console.log("Your pictures have been entered into the database")
+        console.log("Your pictures have been entered into the database");
         res.send(result);
       }
     })
@@ -25,11 +25,23 @@ module.exports = {
     var program = req.body.program
     pool.query("SELECT url, height, width FROM photos WHERE program = ?", [program], function(error, result) {
       if (error) {
-        console.log(error)
-        res.send(error)
+        console.log(error);
+        res.send(error;
       } else {
-        console.log(program)
-        res.send(result)
+        console.log(program);
+        res.send(result);
+      }
+    })
+  },
+
+  getSurveyPhotos(req, res) {
+    var survey_id = req.body.survey_id
+    pool.query("SELECT url, height, width FROM photos WHERE survey_id = ?", [survey_id], function(error, result) {
+      if (error) {
+        console.log(error);
+        res.send(error);
+      } else {
+        res.send(result);
       }
     })
   }
