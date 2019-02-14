@@ -35,6 +35,7 @@ app.post('/detailsearch', courses.detailSearch);
 app.post('/login', accounts.logIn);
 app.post('/signup', accounts.signUp);
 app.post('/submitsurvey', survey.submitSurvey);
+app.post('/surveys', survey.getSubmittedSurveys);
 app.post('/programsurveys', survey.programSurveys);
 app.post('/savecourse', saved_courses.saveCourse);
 app.post('/accountcourses', saved_courses.accountCourses);

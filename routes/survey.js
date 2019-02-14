@@ -44,5 +44,17 @@ module.exports = {
         res.send(queryResult);
       }
     });
+  },
+
+  getSubmittedSurveys(req, res) {
+      pool.query("SELECT * from survey where approved = 0", function(error, result) {
+        if(error) {
+          res.send(error);
+          console.log("Cannot get surveys");
+        } else if (res.length() > 0) {
+          console.log("Here are the surveys that need approval");
+          res.send(res);
+        }
+      })
   }
 }
