@@ -42,7 +42,6 @@ app.post('/accountcourses', saved_courses.accountCourses);
 app.post('/deleteaccountcourse', saved_courses.deleteAccountCourse);
 app.post('/photos', photos.submitPhotos);
 app.post('/programphotos', photos.getProgramPhotos);
-app.post('/surveyphotos', photos.getSurveyPhotos);
 
 app.listen(port, function() {
     console.log('Listening on port ' + port);

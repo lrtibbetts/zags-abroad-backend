@@ -47,7 +47,7 @@ module.exports = {
   },
 
   getSubmittedSurveys(req, res) {
-    pool.query("SELECT * from survey where approved = 0", function(error, result) {
+    pool.query("SELECT * from survey JOIN photos where approved = 0 AND survey.ID = photos.survey_id", [approved], function(error, result) {
       if(error) {
         res.send(error);
         console.log("Cannot get surveys");
