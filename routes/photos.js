@@ -32,5 +32,27 @@ module.exports = {
         res.send(result);
       }
     });
+  },
+
+  deletePhoto(req, res) {
+    var url = req.body.url;
+    pool.query("DELETE FROM photos WHERE url = ?", [url], function(err, result) {
+      if(err) {
+        res.send(err);
+      } else {
+        res.send(result);
+      }
+    });
+  },
+
+  approvePhoto(req, res) {
+    var url = req.body.url;
+    pool.query("UPDATE photos SET approved = 1 WHERE url = ?", [url], function(err, result) {
+      if(err) {
+        res.send(err);
+      } else {
+        res.send(result);
+      }
+    });
   }
 }

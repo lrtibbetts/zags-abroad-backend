@@ -56,5 +56,27 @@ module.exports = {
         res.send(result);
       }
     });
+  },
+
+  deleteSurvey(req, res) {
+    var id = req.body.id;
+    pool.query("DELETE FROM survey WHERE ID = ?", [id], function(err, result) {
+      if(err) {
+        res.send(err);
+      } else {
+        res.send(result);
+      }
+    });
+  },
+
+  approveSurvey(req, res) {
+    var id = req.body.id;
+    pool.query("UPDATE survey SET approved = 1 WHERE id = ?", [id], function(err, result) {
+      if(err) {
+        res.send(err);
+      } else {
+        res.send(result);
+      }
+    });
   }
 }

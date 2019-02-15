@@ -37,11 +37,15 @@ app.post('/signup', accounts.signUp);
 app.post('/submitsurvey', survey.submitSurvey);
 app.get('/surveys', survey.getSubmittedSurveys);
 app.post('/programsurveys', survey.programSurveys);
+app.post('/approvesurvey', survey.approveSurvey);
+app.post('/deletesurvey', survey.deleteSurvey);
 app.post('/savecourse', saved_courses.saveCourse);
 app.post('/accountcourses', saved_courses.accountCourses);
 app.post('/deleteaccountcourse', saved_courses.deleteAccountCourse);
 app.post('/photos', photos.submitPhotos);
 app.post('/programphotos', photos.getProgramPhotos);
+app.post('/approvephoto', photos.approvePhoto);
+app.post('/deletephoto', photos.deletePhoto);
 
 app.listen(port, function() {
     console.log('Listening on port ' + port);
