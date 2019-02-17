@@ -55,6 +55,47 @@ module.exports = {
             res.send("Email not found");
           }
       });
+  },
+
+  //ADMIN Approval PAGE
+  //we are selecting only the accounts that have gonzaga.edu endings
+  //alisha will have the ability to grant administrative access
+  selectAdmin(req, res) {
+    pool.query("SELECT * FROM accounts WHERE email like '%@g%' and email != 'lombardi@gonzaga.edu'", function(error, result) {
+      if (error) {
+        res.send(error);
+        console.log("No @gonzaga.edu accounts found");
+      } else {
+        res.send(result);
+        console.log("Here are the possible admin accounts");
+      }
+    })
+  },
+
+  approveAdmin(req, res) {
+    var email = req.body.email;
+    pool.query("UPDATE accounts SET is_admin = 1 WHERE email = ?", [email], function(error, result) {
+      if (error) {
+        res.send(error);
+        console.log("Error")
+      } else {
+        res.send(result);
+        console.log("Admin access granted to " + email);
+      }
+    })
+  },
+
+  rejectAdmin(req, res) {
+    var email = req.body.email;
+    pool.query("UPDATE account set is_admin = 0 WHERE email = ? ", [email], function(error, result) {
+      if(error) {
+        res.send(error);
+        console.log("No change in admin privledge");
+      } else {
+        res.send(error);
+        console.log("Now " + email + " has no admin access");
+      }
+    })
   }
 
 };
