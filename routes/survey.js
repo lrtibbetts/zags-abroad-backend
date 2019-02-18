@@ -31,16 +31,18 @@ module.exports = {
     });
   },
 
+  // Get approved surveys for a program
   programSurveys(req, res) {
     var program = req.body.program;
 
-    pool.query("SELECT * FROM survey WHERE program = ?", [program],
+    pool.query("SELECT * FROM survey WHERE program = ? AND approved = 1", [program],
     function(queryError, queryResult) {
       if (queryError) {
         console.log("Cannot get surveys for program: " + program + "\nError: " + queryError);
         res.send(queryError);
       } else {
         console.log("Program: " + program + " survey results");
+        console.log(queryResult);
         res.send(queryResult);
       }
     });
