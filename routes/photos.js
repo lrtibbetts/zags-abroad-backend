@@ -23,7 +23,7 @@ module.exports = {
 
   getProgramPhotos(req, res) {
     var program = req.body.program
-    pool.query("SELECT url, height, width FROM photos WHERE program = ?", [program], function(error, result) {
+    pool.query("SELECT url, height, width FROM photos WHERE program = ?  AND approved = 1", [program], function(error, result) {
       if (error) {
         console.log(error);
         res.send(error);
