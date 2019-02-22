@@ -87,7 +87,7 @@ module.exports = {
 
   rejectAdmin(req, res) {
     var email = req.body.email;
-    pool.query("UPDATE account set is_admin = 0 WHERE email = ? ", [email], function(error, result) {
+    pool.query("UPDATE accounts set is_admin = 0 WHERE email = ? ", [email], function(error, result) {
       if(error) {
         res.send(error);
         console.log("No change in admin privledge");
