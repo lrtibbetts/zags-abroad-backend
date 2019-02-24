@@ -50,17 +50,40 @@ module.exports = {
     });
   },
 
-  getSubmittedSurveys(req, res) {
+  getUnapprovedSurveys(req, res) {
     pool.query("SELECT p.url, p.height, p.width, s.ID, s.name, s.email, s.major, " +
     "s.program, s.term, s.calendar_year, s.year, s.residence, s.trips, s.classes, " +
     "s.activities, s.staff, s.other, s.approved, s.timestamp from survey s LEFT OUTER JOIN photos " +
     "p ON s.ID = p.survey_id WHERE s.approved = 0", function(error, result) {
       if(error) {
         res.send(error);
-        console.log("Cannot get surveys");
       } else {
-        console.log("Here are the surveys that need approval");
-        console.log(result);
+        res.send(result);
+      }
+    });
+  },
+
+  getApprovedSurveys(req, res) {
+    pool.query("SELECT p.url, p.height, p.width, s.ID, s.name, s.email, s.major, " +
+    "s.program, s.term, s.calendar_year, s.year, s.residence, s.trips, s.classes, " +
+    "s.activities, s.staff, s.other, s.approved from survey s LEFT OUTER JOIN photos " +
+    "p ON s.ID = p.survey_id WHERE s.approved = 1", function(error, result) {
+      if(error) {
+        res.send(error);
+      } else {
+        res.send(result);
+      }
+    });
+  },
+
+  getSurveys(req, res) {
+    pool.query("SELECT p.url, p.height, p.width, s.ID, s.name, s.email, s.major, " +
+    "s.program, s.term, s.calendar_year, s.year, s.residence, s.trips, s.classes, " +
+    "s.activities, s.staff, s.other, s.approved from survey s LEFT OUTER JOIN photos " +
+    "p ON s.ID = p.survey_id", function(error, result) {
+      if(error) {
+        res.send(error);
+      } else {
         res.send(result);
       }
     });
