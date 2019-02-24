@@ -1,5 +1,6 @@
 var pool = require('../pool.js');
 var bcrypt = require('bcrypt');
+var nodemailer = require('nodemailer');
 const saltRounds = 10;
 
 module.exports = {
@@ -12,6 +13,7 @@ module.exports = {
     var last = req.body.last;
     var password = req.body.password;
     var admin = 0;
+
     // https://www.abeautifulsite.net/hashing-passwords-with-nodejs-and-bcrypt
     bcrypt.hash(password, saltRounds, function(hashError, hash) {
       if (hashError) {

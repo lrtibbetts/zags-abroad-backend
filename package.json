@@ -18,6 +18,8 @@
     "cors": "^2.8.4",
     "express": "^4.16.4",
     "mysql": "^2.16.0",
+    "nodejs-nodemailer-outlook": "^1.0.8",
+    "nodemailer": "^5.1.1",
     "request": "^2.88.0",
     "should": "^13.2.3"
   },
