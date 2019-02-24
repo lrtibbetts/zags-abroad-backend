@@ -17,9 +17,11 @@ module.exports = {
     var activities = req.body.activities;
     var staff = req.body.staff;
     var other = req.body.other;
+    var timestamp = req.body.timestamp;
+    var approved = 0;
 
-    pool.query("INSERT INTO survey (name, email, major, program, term, calendar_year, year, residence, trips, classes, activities, staff, other) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
-    [name, email, major, program, term, calendar_year, year, residence, trips, classes, activities, staff, other],
+    pool.query("INSERT INTO survey (name, email, major, program, term, calendar_year, year, residence, trips, classes, activities, staff, other, approved, timestamp) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+    [name, email, major, program, term, calendar_year, year, residence, trips, classes, activities, staff, other, approved, timestamp],
     function(queryError, queryResult) {
       if(queryError) {
         console.log(queryError);
@@ -48,13 +50,40 @@ module.exports = {
     });
   },
 
-  getSubmittedSurveys(req, res) {
-    pool.query("SELECT * from survey LEFT OUTER JOIN photos ON survey.ID = photos.survey_id WHERE survey.approved = 0", function(error, result) {
+  getUnapprovedSurveys(req, res) {
+    pool.query("SELECT p.url, p.height, p.width, s.ID, s.name, s.email, s.major, " +
+    "s.program, s.term, s.calendar_year, s.year, s.residence, s.trips, s.classes, " +
+    "s.activities, s.staff, s.other, s.approved, s.timestamp from survey s LEFT OUTER JOIN photos " +
+    "p ON s.ID = p.survey_id WHERE s.approved = 0", function(error, result) {
       if(error) {
         res.send(error);
-        console.log("Cannot get surveys");
       } else {
-        console.log("Here are the surveys that need approval");
+        res.send(result);
+      }
+    });
+  },
+
+  getApprovedSurveys(req, res) {
+    pool.query("SELECT p.url, p.height, p.width, s.ID, s.name, s.email, s.major, " +
+    "s.program, s.term, s.calendar_year, s.year, s.residence, s.trips, s.classes, " +
+    "s.activities, s.staff, s.other, s.approved from survey s LEFT OUTER JOIN photos " +
+    "p ON s.ID = p.survey_id WHERE s.approved = 1", function(error, result) {
+      if(error) {
+        res.send(error);
+      } else {
+        res.send(result);
+      }
+    });
+  },
+
+  getSurveys(req, res) {
+    pool.query("SELECT p.url, p.height, p.width, s.ID, s.name, s.email, s.major, " +
+    "s.program, s.term, s.calendar_year, s.year, s.residence, s.trips, s.classes, " +
+    "s.activities, s.staff, s.other, s.approved from survey s LEFT OUTER JOIN photos " +
+    "p ON s.ID = p.survey_id", function(error, result) {
+      if(error) {
+        res.send(error);
+      } else {
         res.send(result);
       }
     });

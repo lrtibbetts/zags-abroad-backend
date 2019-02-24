@@ -1,5 +1,6 @@
 var pool = require('../pool.js');
 var bcrypt = require('bcrypt');
+var nodemailer = require('nodemailer');
 const saltRounds = 10;
 
 module.exports = {
@@ -12,6 +13,7 @@ module.exports = {
     var last = req.body.last;
     var password = req.body.password;
     var admin = 0;
+
     // https://www.abeautifulsite.net/hashing-passwords-with-nodejs-and-bcrypt
     bcrypt.hash(password, saltRounds, function(hashError, hash) {
       if (hashError) {
@@ -60,7 +62,7 @@ module.exports = {
   //ADMIN Approval PAGE
   //we are selecting only the accounts that have gonzaga.edu endings
   //alisha will have the ability to grant administrative access
-  selectAdmin(req, res) {
+  getAccounts(req, res) {
     pool.query("SELECT * FROM accounts WHERE email like '%@g%' and email != 'lombardi@gonzaga.edu'", function(error, result) {
       if (error) {
         res.send(error);
@@ -72,7 +74,7 @@ module.exports = {
     })
   },
 
-  approveAdmin(req, res) {
+  grantAccess(req, res) {
     var email = req.body.email;
     pool.query("UPDATE accounts SET is_admin = 1 WHERE email = ?", [email], function(error, result) {
       if (error) {
@@ -85,9 +87,9 @@ module.exports = {
     })
   },
 
-  rejectAdmin(req, res) {
+  removeAccess(req, res) {
     var email = req.body.email;
-    pool.query("UPDATE account set is_admin = 0 WHERE email = ? ", [email], function(error, result) {
+    pool.query("UPDATE accounts set is_admin = 0 WHERE email = ? ", [email], function(error, result) {
       if(error) {
         res.send(error);
         console.log("No change in admin privledge");
