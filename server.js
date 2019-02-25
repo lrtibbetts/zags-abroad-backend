@@ -36,6 +36,7 @@ app.post('/mainsearch', courses.mainSearch);
 app.post('/detailsearch', courses.detailSearch);
 app.post('/login', accounts.logIn);
 app.post('/signup', accounts.signUp);
+app.post('/send', accounts.sendEmail);
 app.get('/accounts', accounts.getAccounts);
 app.post('/grantaccess', accounts.grantAccess);
 app.post('/removeaccess', accounts.removeAccess);

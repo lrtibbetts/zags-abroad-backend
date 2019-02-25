@@ -1,9 +1,66 @@
 var pool = require('../pool.js');
 var bcrypt = require('bcrypt');
 var nodemailer = require('nodemailer');
+var sendmail = require('sendmail')();
 const saltRounds = 10;
 
 module.exports = {
+  sendEmail(req, res) {
+    var fname = req.body.first
+    var lname = req.body.last
+    var email = req.body.email
+    sendmail({
+      from: 'zagsabroad@gonzaga.edu',
+      to: email,
+      subject: 'ITS BRITNEY BITCH',
+      html: '<b>Hello ' + fname + " " + lname + "!</b></br> Thank you for signing up for <b><i>Zags Abroad</i></b>. Before you continue to our website, we would love it if you could confirm your email. Please click the link provided",
+    }, function(err, reply) {
+      if(err) {
+        console.log(err);
+      } else {
+        console.log("email sent")
+      }
+  });
+    // console.log("HElp");
+    // var transport = {
+    //   service: 'Outlook365',
+    // }
+    //
+    // var transporter = nodemailer.createTransport(transport);
+    //
+    // transporter.verify((error, success) => {
+    //   if(error) {
+    //     console.log(error);
+    //   } else {
+    //     console.log('server is ready to take messages');
+    //   }
+    // });
+    //
+    // var name = req.body.first
+    // var email = req.body.email
+    //
+    // var mail = {
+    //   from: 'zagsabroad@gonzaga.edu',
+    //   to: email,  //Change to email address that you want to receive messages on
+    //   subject: 'New Message from Contact Form',
+    //   text: "WHATTTT"
+    // }
+    //
+    // transporter.sendMail(mail, (err, data) => {
+    //   if (err) {
+    //     res.json({
+    //       msg: 'fail'
+    //     })
+    //     console.log(err);
+    //   } else {
+    //     res.json({
+    //       msg: 'success'
+    //     })
+    //     console.log("check email")
+    //   }
+    // })
+
+  },
   //SIGN UP PAGE
   //If email is not already in the database, then insert
   //Else, return "User already exists"
