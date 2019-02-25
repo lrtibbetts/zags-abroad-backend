@@ -1,6 +1,5 @@
 var pool = require('../pool.js');
 var bcrypt = require('bcrypt');
-var nodemailer = require('nodemailer');
 var sendmail = require('sendmail')();
 const saltRounds = 10;
 
@@ -21,45 +20,6 @@ module.exports = {
         console.log("email sent")
       }
   });
-    // console.log("HElp");
-    // var transport = {
-    //   service: 'Outlook365',
-    // }
-    //
-    // var transporter = nodemailer.createTransport(transport);
-    //
-    // transporter.verify((error, success) => {
-    //   if(error) {
-    //     console.log(error);
-    //   } else {
-    //     console.log('server is ready to take messages');
-    //   }
-    // });
-    //
-    // var name = req.body.first
-    // var email = req.body.email
-    //
-    // var mail = {
-    //   from: 'zagsabroad@gonzaga.edu',
-    //   to: email,  //Change to email address that you want to receive messages on
-    //   subject: 'New Message from Contact Form',
-    //   text: "WHATTTT"
-    // }
-    //
-    // transporter.sendMail(mail, (err, data) => {
-    //   if (err) {
-    //     res.json({
-    //       msg: 'fail'
-    //     })
-    //     console.log(err);
-    //   } else {
-    //     res.json({
-    //       msg: 'success'
-    //     })
-    //     console.log("check email")
-    //   }
-    // })
-
   },
   //SIGN UP PAGE
   //If email is not already in the database, then insert
