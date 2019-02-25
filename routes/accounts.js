@@ -11,7 +11,7 @@ module.exports = {
     sendmail({
       from: 'zagsabroad@gonzaga.edu',
       to: email,
-      subject: 'ITS BRITNEY BITCH',
+      subject: 'EMAIL CONFIRMATION FROM ZAGS ABROAD',
       html: '<b>Hello ' + fname + " " + lname + "!</b></br> Thank you for signing up for <b><i>Zags Abroad</i></b>. Before you continue to our website, we would love it if you could confirm your email. Please click the link provided",
     }, function(err, reply) {
       if(err) {
