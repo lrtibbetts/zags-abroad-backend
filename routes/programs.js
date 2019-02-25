@@ -67,11 +67,10 @@ module.exports = {
     var host_url = req.body.host_url;
     var application_link = req.body.application_link;
     var city = req.body.city;
-    var org_host_program = req.body.org_host_program;
-    console.log("ORG:" + org_host_program);
+    var orig_host_program = req.body.orig_host_program;
     pool.query("UPDATE programs SET host_program = ?, program_type = ?, host_url = ?," +
     " application_link = ?, city = ? WHERE host_program = ?",
-    [host_program, program_type, host_url, application_link, city, org_host_program],
+    [host_program, program_type, host_url, application_link, city, orig_host_program],
     function(editError, editResult) {
       if(editError) {
         console.log(editError);
