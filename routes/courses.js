@@ -58,20 +58,6 @@ module.exports = {
     });
   },
 
-  //DELETE A COURSE FROM THE EQUIVALENCY TABLE
-  deleteCourse(req, res) {
-    var id = req.body.id;
-    pool.query("DELETE FROM course_equivalencies WHERE id = ?", [id], function(deleteError, deleteResult) {
-      if(deleteError) {
-        res.send(deleteError);
-      } else if(deleteResult.affectedRows === 0) {
-        res.send("Course does not exist");
-      } else {
-        res.send(deleteResult);
-      }
-    });
-  },
-
   //EDIT A COURSE IN THE EQUIVALENCY TABLE
   editCourse(req, res) {
     var id = req.body.id;
@@ -102,6 +88,21 @@ module.exports = {
       }
     });
   },
+
+    //DELETE A COURSE FROM THE EQUIVALENCY TABLE
+    deleteCourse(req, res) {
+      var id = req.body.id;
+      pool.query("DELETE FROM course_equivalencies WHERE id = ?", [id], function(deleteError, deleteResult) {
+        if(deleteError) {
+          res.send(deleteError);
+        } else if(deleteResult.affectedRows === 0) {
+          res.send("Course does not exist");
+        } else {
+          res.send(deleteResult);
+        }
+      });
+    },
+
 
   //Filtering on Main Program Search Page
   //Return course equivalencies with GU courses that match filter(s)

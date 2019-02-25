@@ -58,10 +58,33 @@ module.exports = {
         res.send(addResult);
       }
     });
-  }/*,
+  },
+
+  //EDIT A COURSE IN THE EQUIVALENCY TABLE
+  editProgram(req, res) {
+    var host_program = req.body.host_program;
+    var program_type = req.body.program_type;
+    var host_url = req.body.host_url;
+    var application_link = req.body.application_link;
+    var city = req.body.city;
+    var org_host_program = req.body.org_host_program;
+    console.log("ORG:" + org_host_program);
+    pool.query("UPDATE programs SET host_program = ?, program_type = ?, host_url = ?," +
+    " application_link = ?, city = ? WHERE host_program = ?",
+    [host_program, program_type, host_url, application_link, city, org_host_program],
+    function(editError, editResult) {
+      if(editError) {
+        console.log(editError);
+        res.send(editError);
+      } else {
+        console.log("PROGRAM MODIFIED");
+        res.send(editResult);
+      }
+    });
+  }//,
 
   //DELETE A COURSE FROM THE EQUIVALENCY TABLE
-  deleteProgram(req, res) {
+  /*deleteProgram(req, res) {
     var host_program = req.body.host_program;
     pool.query("DELETE FROM programs WHERE host_program = ?", [host_program],
     function(deleteError, deleteResult) {
@@ -71,37 +94,6 @@ module.exports = {
         res.send("Program does not exist");
       } else {
         res.send(deleteResult);
-      }
-    });
-  }//,*/
-
-  //EDIT A COURSE IN THE EQUIVALENCY TABLE
-  /*editCourse(req, res) {
-    var id = req.body.id;
-    var host_program = req.body.host_program;
-    var host_course_number = req.body.host_course_number;
-    var host_course_name = req.body.host_course_name;
-    var gu_course_number = req.body.gu_course_number;
-    var gu_course_name = req.body.gu_course_name;
-    var core = req.body.core;
-    var comments = req.body.comments;
-    var signature_needed = req.body.signature_needed;
-    var approved_by = req.body.approved_by;
-    var approval_date = req.body.approval_date;
-    var approved_until = req.body.approved_until;
-    var department = req.body.department;
-    pool.query("UPDATE course_equivalencies SET host_program = ?, host_course_number = ?," +
-    " host_course_name = ?, gu_course_number = ?, gu_course_name = ?, core = ?, comments = ?," +
-    " signature_needed = ?, department = ?, approved_by = ?, approval_date = ?, approved_until = ?" +
-    " WHERE id = ?",
-    [host_program, host_course_number, host_course_name, gu_course_number, gu_course_name, core, comments, signature_needed, department, approved_by, approval_date, approved_until, id],
-    function(editError, editResult) {
-      if(editError) {
-        console.log(editError);
-        res.send(editError);
-      } else {
-        console.log("COURSE MODIFIED");
-        res.send(editResult);
       }
     });
   }*/

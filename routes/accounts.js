@@ -1,6 +1,6 @@
 var pool = require('../pool.js');
 var bcrypt = require('bcrypt');
-var nodemailer = require('nodemailer');
+//var nodemailer = require('nodemailer');
 const saltRounds = 10;
 
 module.exports = {
