@@ -29,7 +29,7 @@ app.get('/locations', programs.getLocations);
 
 app.post('/addprogram', programs.addProgram);
 app.post('/editprogram', programs.editProgram);
-//app.post('/deleteprogram', programs.deleteProgram);
+app.post('/deleteprogram', programs.deleteProgram);
 
 app.get('/departments', departments.getDepartments);
 app.get('/courses', courses.getCourses);

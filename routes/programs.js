@@ -77,14 +77,15 @@ module.exports = {
         console.log(editError);
         res.send(editError);
       } else {
+        console.log(host_program);
         console.log("PROGRAM MODIFIED");
         res.send(editResult);
       }
     });
-  }//,
+  },
 
   //DELETE A COURSE FROM THE EQUIVALENCY TABLE
-  /*deleteProgram(req, res) {
+  deleteProgram(req, res) {
     var host_program = req.body.host_program;
     pool.query("DELETE FROM programs WHERE host_program = ?", [host_program],
     function(deleteError, deleteResult) {
@@ -96,5 +97,5 @@ module.exports = {
         res.send(deleteResult);
       }
     });
-  }*/
+  }
 };
