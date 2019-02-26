@@ -8,11 +8,15 @@ module.exports = {
     var fname = req.body.first
     var lname = req.body.last
     var email = req.body.email
+    var host = req.get('host');
+
+    rand = Math.floor((Math.random() * 100) + 54);
+    link="https://"+host
     sendmail({
       from: 'zagsabroad@gonzaga.edu',
       to: email,
-      subject: 'EMAIL CONFIRMATION FROM ZAGS ABROAD',
-      html: '<b>Hello ' + fname + " " + lname + "!</b></br> Thank you for signing up for <b><i>Zags Abroad</i></b>. Before you continue to our website, we would love it if you could confirm your email. Please click the link provided",
+      subject: 'ZAGS ABROAD',
+      html: '<b>Hello ' + fname + " " + lname + "!</b></br> Thank you for signing up for <b><i>Zags Abroad</i></b>. Before you continue to our website, we would love it if you could confirm your email</br> <a href="+link+">Click here to verify</a>",
     }, function(err, reply) {
       if(err) {
         console.log(err);
