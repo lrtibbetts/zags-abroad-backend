@@ -19,7 +19,7 @@ module.exports = {
     var timestamp = req.body.timestamp;
     var approved = 0;
 
-    pool.query("INSERT INTO survey (name, email, major, program, term, calendar_year, year, residence, trips, classes, activities, staff, approved, timestamp) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+    pool.query("INSERT INTO survey (name, email, major, program, term, calendar_year, year, residence, trips, classes, activities, staff, approved, timestamp) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
     [name, email, major, program, term, calendar_year, year, residence, trips, classes, activities, staff, approved, timestamp],
     function(queryError, queryResult) {
       if(queryError) {
