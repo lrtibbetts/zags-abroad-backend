@@ -65,7 +65,7 @@ module.exports = {
   getApprovedSurveys(req, res) {
     pool.query("SELECT p.url, p.height, p.width, s.ID, s.name, s.email, s.major, " +
     "s.program, s.term, s.calendar_year, s.year, s.residence, s.trips, s.classes, " +
-    "s.activities, s.staff, s.approved from survey s LEFT OUTER JOIN photos " +
+    "s.activities, s.staff, s.approved, s.timestamp from survey s LEFT OUTER JOIN photos " +
     "p ON s.ID = p.survey_id WHERE s.approved = 1", function(error, result) {
       if(error) {
         res.send(error);
@@ -78,7 +78,7 @@ module.exports = {
   getSurveys(req, res) {
     pool.query("SELECT p.url, p.height, p.width, s.ID, s.name, s.email, s.major, " +
     "s.program, s.term, s.calendar_year, s.year, s.residence, s.trips, s.classes, " +
-    "s.activities, s.staff, s.approved from survey s LEFT OUTER JOIN photos " +
+    "s.activities, s.staff, s.approved, s.timestamp from survey s LEFT OUTER JOIN photos " +
     "p ON s.ID = p.survey_id", function(error, result) {
       if(error) {
         res.send(error);
