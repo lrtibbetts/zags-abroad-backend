@@ -12,6 +12,8 @@ module.exports = {
 
     rand = Math.floor((Math.random() * 100) + 54);
     link="https://"+host
+    console.log(rand);
+    console.log(link);
     sendmail({
       from: 'zagsabroad@gonzaga.edu',
       to: email,
