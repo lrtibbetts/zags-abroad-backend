@@ -16,12 +16,11 @@ module.exports = {
     var classes = req.body.classes;
     var activities = req.body.activities;
     var staff = req.body.staff;
-    var other = req.body.other;
     var timestamp = req.body.timestamp;
     var approved = 0;
 
-    pool.query("INSERT INTO survey (name, email, major, program, term, calendar_year, year, residence, trips, classes, activities, staff, other, approved, timestamp) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-    [name, email, major, program, term, calendar_year, year, residence, trips, classes, activities, staff, other, approved, timestamp],
+    pool.query("INSERT INTO survey (name, email, major, program, term, calendar_year, year, residence, trips, classes, activities, staff, approved, timestamp) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+    [name, email, major, program, term, calendar_year, year, residence, trips, classes, activities, staff, approved, timestamp],
     function(queryError, queryResult) {
       if(queryError) {
         console.log(queryError);
@@ -53,7 +52,7 @@ module.exports = {
   getUnapprovedSurveys(req, res) {
     pool.query("SELECT p.url, p.height, p.width, s.ID, s.name, s.email, s.major, " +
     "s.program, s.term, s.calendar_year, s.year, s.residence, s.trips, s.classes, " +
-    "s.activities, s.staff, s.other, s.approved, s.timestamp from survey s LEFT OUTER JOIN photos " +
+    "s.activities, s.staff, s.approved, s.timestamp from survey s LEFT OUTER JOIN photos " +
     "p ON s.ID = p.survey_id WHERE s.approved = 0", function(error, result) {
       if(error) {
         res.send(error);
@@ -66,7 +65,7 @@ module.exports = {
   getApprovedSurveys(req, res) {
     pool.query("SELECT p.url, p.height, p.width, s.ID, s.name, s.email, s.major, " +
     "s.program, s.term, s.calendar_year, s.year, s.residence, s.trips, s.classes, " +
-    "s.activities, s.staff, s.other, s.approved from survey s LEFT OUTER JOIN photos " +
+    "s.activities, s.staff, s.approved from survey s LEFT OUTER JOIN photos " +
     "p ON s.ID = p.survey_id WHERE s.approved = 1", function(error, result) {
       if(error) {
         res.send(error);
@@ -79,7 +78,7 @@ module.exports = {
   getSurveys(req, res) {
     pool.query("SELECT p.url, p.height, p.width, s.ID, s.name, s.email, s.major, " +
     "s.program, s.term, s.calendar_year, s.year, s.residence, s.trips, s.classes, " +
-    "s.activities, s.staff, s.other, s.approved from survey s LEFT OUTER JOIN photos " +
+    "s.activities, s.staff, s.approved from survey s LEFT OUTER JOIN photos " +
     "p ON s.ID = p.survey_id", function(error, result) {
       if(error) {
         res.send(error);
