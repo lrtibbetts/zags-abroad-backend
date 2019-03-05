@@ -55,6 +55,7 @@ module.exports = {
   //we will be using this function to ensure that the email sent a matching token
   verifyEmail(req,res) {
     //we need to pass in the new toke
+
     if((req.protocol+"://"+req.get('host'))==("https://"+host)) {
       console.log("Domain matched. information is from authentic email");
       if(req.query.id == newToken) {
@@ -76,7 +77,10 @@ module.exports = {
         res.end("check email")
       }
     } else {
+      console.log(req.protocol+"://"+req.get('host'))
+      console.log("https://"+host)
       res.end("<h1>Request is from unknown source </h1>")
+
     }
   },
 
