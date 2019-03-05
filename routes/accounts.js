@@ -1,26 +1,85 @@
 var pool = require('../pool.js');
 var bcrypt = require('bcrypt');
+var nodemailer = require('nodemailer');
 var sendmail = require('sendmail')();
 const saltRounds = 10;
+var verified = false;
+var newToken, mailOptions, host, link, person;
+require('dotenv').config()
 
 module.exports = {
+  //this will be used to send emails to the user
+  //we want to call this when they hit the "get started" button on the sign up page
   sendEmail(req, res) {
     var fname = req.body.first
     var lname = req.body.last
     var email = req.body.email
-    sendmail({
-      from: 'zagsabroad@gonzaga.edu',
-      to: email,
-      subject: 'EMAIL CONFIRMATION FROM ZAGS ABROAD',
-      html: '<b>Hello ' + fname + " " + lname + "!</b></br> Thank you for signing up for <b><i>Zags Abroad</i></b>. Before you continue to our website, we would love it if you could confirm your email. Please click the link provided",
-    }, function(err, reply) {
-      if(err) {
-        console.log(err);
-      } else {
-        console.log("email sent")
+    var password = req.body.password
+    person = [fname, lname, email, password];
+    console.log("email: "+ email)
+    var smtpTransport = nodemailer.createTransport({
+      service: process.env.EMAIL_SERVICE,
+      auth: {
+        user: process.env.EMAIL_FOR_VERIFICATION,
+        pass: process.env.EMAIL_VERIFICATION_PASS,
       }
-  });
+    });
+    var rand = function() {
+        return Math.random().toString(36).substr(2);
+    };
+    var token = function() {
+        return rand() + rand(); // to make it longer
+    };
+
+    newToken = token();
+    console.log(newToken);
+    host=req.get('host');
+    link = "http://"+req.get('host')+"/verify?id="+ newToken;
+    mailOptions = {
+      from: "zagsabroad@gmail.com",
+      to: email,
+      subject: "ZAGS ABROAD email verification",
+      html: "Hello, </br> Please click on the link to verify you email. </br> <a href="+link+">Click here to verify</a>"
+    };
+    console.log(mailOptions);
+    smtpTransport.sendMail(mailOptions, function(error, info) {
+      if (error) {
+        res.send({first:fname, last: lname, email:email, password: password, token: newToken, sent: false, host: host})
+      } else {
+        res.send({first:fname, last: lname, email:email, password: password, token: newToken, sent: true, host: host});
+      }
+    });
+
   },
+
+  //we will be using this function to ensure that the email sent a matching token
+  verifyEmail(req,res) {
+    //we need to pass in the new toke
+    if((req.protocol+"://"+req.get('host'))==("https://"+host)) {
+      console.log("Domain matched. information is from authentic email");
+      if(req.query.id == newToken) {
+        verified = true;
+        console.log("email is verified");
+        //i want to send all account info back here so that I can then make an account
+        pool.query("UPDATE accounts SET is_verified = 1 WHERE email = ?", [person[2]], function(error, result) {
+          if (error) {
+            console.log("Account has not been updated in the database");
+          } else {
+            console.log("check the database. the account should be verified");
+          }
+        })
+        res.redirect('https://zagsabroad-backend.herokuapp.com/login')
+
+      } else {
+        verified = false;
+        console.log("email is not verified");
+        res.end("check email")
+      }
+    } else {
+      res.end("<h1>Request is from unknown source </h1>")
+    }
+  },
+
   //SIGN UP PAGE
   //If email is not already in the database, then insert
   //Else, return "User already exists"
@@ -57,7 +116,7 @@ module.exports = {
   logIn(req, res) {
       var email = req.body.email;
       var password = req.body.password;
-      pool.query("SELECT * FROM accounts WHERE email = ?", [email],
+      pool.query("SELECT * FROM accounts WHERE email = ? and is_verified = 1", [email],
         function (queryError, queryResult) {
           if(queryError) {
             res.send(queryError);
