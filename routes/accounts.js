@@ -34,7 +34,7 @@ module.exports = {
     newToken = token();
     console.log(newToken);
     host=req.get('host');
-    link = "http://"+req.get('host')+"/verify?id="+ newToken;
+    link = "https://"+req.get('host')+"/verify?id="+ newToken;
     mailOptions = {
       from: "zagsabroad@gmail.com",
       to: email,
@@ -55,7 +55,8 @@ module.exports = {
   //we will be using this function to ensure that the email sent a matching token
   verifyEmail(req,res) {
     //we need to pass in the new toke
-
+    console.log(req.protocol+"://"+req.get('host'))
+    console.log(("https://"+host))
     if((req.protocol+"://"+req.get('host'))==("https://"+host)) {
       console.log("Domain matched. information is from authentic email");
       if(req.query.id == newToken) {
