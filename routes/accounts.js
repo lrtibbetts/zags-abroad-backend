@@ -76,7 +76,7 @@ module.exports = {
         res.end("check email")
       }
     } else {
-      str = "http://"+host
+      str = "https://"+host
       res.end("<h1>" +req.protocol+"://"+req.get('host') + "             " + str + "</h1>")
 
     }
