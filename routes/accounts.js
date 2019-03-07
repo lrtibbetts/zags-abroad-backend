@@ -68,7 +68,7 @@ module.exports = {
             console.log("check the database. the account should be verified");
           }
         })
-        res.redirect('https://zagsabroad-backend.herokuapp.com/login')
+        res.redirect('https://zagsabroad.herokuapp.com/login')
 
       } else {
         verified = false;
