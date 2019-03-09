@@ -34,7 +34,7 @@ module.exports = {
     newToken = token();
     console.log(newToken);
     host=req.get('host');
-    link = "http://"+req.get('host')+"/verify?id="+ newToken;
+    link = "https://"+req.get('host')+"/verify?id="+ newToken;
     mailOptions = {
       from: "zagsabroad@gmail.com",
       to: email,
@@ -55,7 +55,7 @@ module.exports = {
   //we will be using this function to ensure that the email sent a matching token
   verifyEmail(req,res) {
     //we need to pass in the new toke
-    if((req.protocol+"://"+req.get('host'))==("https://"+host)) {
+    if((req.protocol+"s://"+req.get('host'))==("https://"+host)) {
       console.log("Domain matched. information is from authentic email");
       if(req.query.id == newToken) {
         verified = true;
@@ -68,7 +68,7 @@ module.exports = {
             console.log("check the database. the account should be verified");
           }
         })
-        res.redirect('https://zagsabroad-backend.herokuapp.com/login')
+        res.redirect('https://zagsabroad.herokuapp.com/login')
 
       } else {
         verified = false;
@@ -76,7 +76,9 @@ module.exports = {
         res.end("check email")
       }
     } else {
-      res.end("<h1>Request is from unknown source </h1>")
+      str = "https://"+host
+      res.end("<h1>" +req.protocol+"://"+req.get('host') + "             " + str + "</h1>")
+
     }
   },
 
