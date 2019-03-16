@@ -1,8 +1,6 @@
 var pool = require('../pool.js');
 
 module.exports = {
-  // here, we want to store the information that
-  // the student inputs into the curvey
   submitSurvey(req, res) {
     var name = req.body.name;
     var email = req.body.email;
@@ -19,14 +17,15 @@ module.exports = {
     var timestamp = req.body.timestamp;
     var approved = 0;
 
-    pool.query("INSERT INTO survey (name, email, major, program, term, calendar_year, year, residence, trips, classes, activities, staff, approved, timestamp) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-    [name, email, major, program, term, calendar_year, year, residence, trips, classes, activities, staff, approved, timestamp],
+    pool.query("INSERT INTO survey (name, email, major, program, term, " +
+    "calendar_year, year, residence, trips, classes, activities, staff, " +
+    "approved, timestamp) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+    [name, email, major, program, term, calendar_year, year, residence, trips,
+    classes, activities, staff, approved, timestamp],
     function(queryError, queryResult) {
       if(queryError) {
-        console.log(queryError);
         res.send(queryError);
       } else {
-        console.log("Survey entry received");
         res.send(queryResult);
       }
     });
@@ -35,15 +34,11 @@ module.exports = {
   // Get approved surveys for a program
   programSurveys(req, res) {
     var program = req.body.program;
-
     pool.query("SELECT * FROM survey WHERE program = ? AND approved = 1", [program],
     function(queryError, queryResult) {
       if (queryError) {
-        console.log("Cannot get surveys for program: " + program + "\nError: " + queryError);
         res.send(queryError);
       } else {
-        console.log("Program: " + program + " survey results");
-        console.log(queryResult);
         res.send(queryResult);
       }
     });
@@ -52,8 +47,12 @@ module.exports = {
   getUnapprovedSurveys(req, res) {
     pool.query("SELECT p.url, p.height, p.width, s.ID, s.name, s.email, s.major, " +
     "s.program, s.term, s.calendar_year, s.year, s.residence, s.trips, s.classes, " +
-    "s.activities, s.staff, s.approved, s.timestamp from survey s LEFT OUTER JOIN photos " +
-    "p ON s.ID = p.survey_id WHERE s.approved = 0", function(error, result) {
+    "s.activities, s.staff, s.approved, s.timestamp from survey s LEFT OUTER JOIN " +
+    "photos p ON s.ID = p.survey_id WHERE s.approved = 0 UNION " +
+    "SELECT p.url, p.height, p.width, s.ID, s.name, s.email, s.major, s.program, " +
+    "s.term, s.calendar_year, s.year, s.residence, s.trips, s.classes, s.activities, " +
+    "s.staff, s.approved, s.timestamp from survey s RIGHT OUTER JOIN photos p " +
+    "ON s.ID = p.survey_id WHERE s.approved = 0", function(error, result) {
       if(error) {
         res.send(error);
       } else {
@@ -65,8 +64,12 @@ module.exports = {
   getApprovedSurveys(req, res) {
     pool.query("SELECT p.url, p.height, p.width, s.ID, s.name, s.email, s.major, " +
     "s.program, s.term, s.calendar_year, s.year, s.residence, s.trips, s.classes, " +
-    "s.activities, s.staff, s.approved, s.timestamp from survey s LEFT OUTER JOIN photos " +
-    "p ON s.ID = p.survey_id WHERE s.approved = 1", function(error, result) {
+    "s.activities, s.staff, s.approved, s.timestamp from survey s LEFT OUTER JOIN " +
+    "photos p ON s.ID = p.survey_id WHERE s.approved = 1 OR p.approved = 1 UNION " +
+    "SELECT p.url, p.height, p.width, s.ID, s.name, s.email, s.major, " +
+    "s.program, s.term, s.calendar_year, s.year, s.residence, s.trips, s.classes, " +
+    "s.activities, s.staff, s.approved, s.timestamp from survey s RIGHT OUTER JOIN " +
+    "photos p ON s.ID = p.survey_id WHERE s.approved = 1 OR p.approved = 1", function(error, result) {
       if(error) {
         res.send(error);
       } else {
@@ -78,8 +81,12 @@ module.exports = {
   getSurveys(req, res) {
     pool.query("SELECT p.url, p.height, p.width, s.ID, s.name, s.email, s.major, " +
     "s.program, s.term, s.calendar_year, s.year, s.residence, s.trips, s.classes, " +
-    "s.activities, s.staff, s.approved, s.timestamp from survey s LEFT OUTER JOIN photos " +
-    "p ON s.ID = p.survey_id", function(error, result) {
+    "s.activities, s.staff, s.approved, s.timestamp from survey s LEFT OUTER JOIN " +
+    "photos p ON s.ID = p.survey_id UNION SELECT p.url, p.height, p.width, s.ID, " +
+    "s.name, s.email, s.major, s.program, s.term, s.calendar_year, s.year, " +
+    "s.residence, s.trips, s.classes, s.activities, s.staff, s.approved, " +
+    "s.timestamp from survey s RIGHT OUTER JOIN photos p ON s.ID = p.survey_id",
+    function(error, result) {
       if(error) {
         res.send(error);
       } else {
