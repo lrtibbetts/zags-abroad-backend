@@ -1,7 +1,6 @@
 var pool = require('../pool.js');
 var bcrypt = require('bcrypt');
 var nodemailer = require('nodemailer');
-var sendmail = require('sendmail')();
 const saltRounds = 10;
 var verified = false;
 var newToken, mailOptions, host, link, person;

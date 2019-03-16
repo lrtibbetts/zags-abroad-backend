@@ -6,7 +6,6 @@ module.exports = {
     pool.query("SELECT host_program FROM programs ORDER BY host_program ASC",
       function(programError, programResult) {
         if(programError) {
-          console.log("Cannot get programs");
           res.send(programError);
         } else {
           res.send(programResult);
@@ -19,7 +18,6 @@ module.exports = {
     pool.query("SELECT * FROM programs ORDER BY host_program ASC",
       function(programError, programResult) {
         if(programError) {
-          console.log("Cannot get programs");
           res.send(programError);
         } else {
           res.send(programResult);
@@ -47,14 +45,14 @@ module.exports = {
     var host_url = req.body.host_url;
     var application_link = req.body.application_link;
     var city = req.body.city;
-    pool.query("INSERT INTO programs (host_program, program_type, host_url, application_link, city) VALUES (?,?,?,?,?)",
-    [host_program, program_type, host_url, application_link, city],
+    var lat = req.body.lat;
+    var lng = req.body.lng;
+    pool.query("INSERT INTO programs (host_program, program_type, host_url, application_link, city, lat, lng) VALUES (?,?,?,?,?,?,?)",
+    [host_program, program_type, host_url, application_link, city, lat, lng],
     function(addError, addResult) {
       if(addError) {
-        console.log(addError);
         res.send(addError);
       } else {
-        console.log("PROGRAM " + host_program + " ADDED");
         res.send(addResult);
       }
     });
@@ -68,16 +66,15 @@ module.exports = {
     var application_link = req.body.application_link;
     var city = req.body.city;
     var orig_host_program = req.body.orig_host_program;
+    var lat = req.body.lat;
+    var lng = req.body.lng;
     pool.query("UPDATE programs SET host_program = ?, program_type = ?, host_url = ?," +
-    " application_link = ?, city = ? WHERE host_program = ?",
-    [host_program, program_type, host_url, application_link, city, orig_host_program],
+    " application_link = ?, city = ?, lat = ?, lng = ? WHERE host_program = ?",
+    [host_program, program_type, host_url, application_link, city, lat, lng, orig_host_program],
     function(editError, editResult) {
       if(editError) {
-        console.log(editError);
         res.send(editError);
       } else {
-        console.log(host_program);
-        console.log("PROGRAM MODIFIED");
         res.send(editResult);
       }
     });
