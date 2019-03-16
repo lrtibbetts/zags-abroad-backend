@@ -54,6 +54,7 @@ app.post('/deletesurvey', survey.deleteSurvey);
 app.post('/savecourse', saved_courses.saveCourse);
 app.post('/accountcourses', saved_courses.accountCourses);
 app.post('/deleteaccountcourse', saved_courses.deleteAccountCourse);
+app.post('/deletedcourses', saved_courses.getDeletedCourses);
 app.post('/photos', photos.submitPhotos);
 app.post('/programphotos', photos.getProgramPhotos);
 app.post('/approvephoto', photos.approvePhoto);
