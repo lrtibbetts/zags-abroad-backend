@@ -1,9 +1,6 @@
 var pool = require('../pool.js');
 
 module.exports = {
-  //COURSE EQUIVALENCY PAGE
-  //this selects all of the courses
-  //we are selecting all the columns but will only show a few important row
   getCourses(req, res) {
       pool.query("SELECT * FROM course_equivalencies ORDER BY host_program, gu_course_number ASC",
       function(queryError, queryResult) {
@@ -15,7 +12,9 @@ module.exports = {
       });
   },
 
-  //COURSES OF A GIVEN PROGRAM
+  /*
+    Get courses for a specific study abroad program
+  */
   programCourses(req, res) {
     var program = req.body.program;
     pool.query("SELECT id, host_program, host_course_name, host_course_number, gu_course_name, gu_course_number, signature_needed, core" +
@@ -29,8 +28,6 @@ module.exports = {
     });
   },
 
-  //ADD A COURSE TO THE EQUIVALENCY TABLE
-  //allows admin to add courses to the course equivalency table
   addCourse(req, res) {
     var host_program = req.body.host_program;
     var host_course_number = req.body.host_course_number;
@@ -49,16 +46,13 @@ module.exports = {
     [host_program, host_course_number, host_course_name, gu_course_number, gu_course_name, core, comments, signature_needed, department, approved_by, approval_date, approved_until],
     function(addError, addResult) {
       if(addError) {
-        console.log(addError);
         res.send(addError);
       } else {
-        console.log("COURSE ADDED");
         res.send(addResult);
       }
     });
   },
 
-  //EDIT A COURSE IN THE EQUIVALENCY TABLE
   editCourse(req, res) {
     var id = req.body.id;
     var host_program = req.body.host_program;
@@ -80,16 +74,13 @@ module.exports = {
     [host_program, host_course_number, host_course_name, gu_course_number, gu_course_name, core, comments, signature_needed, department, approved_by, approval_date, approved_until, id],
     function(editError, editResult) {
       if(editError) {
-        console.log(editError);
         res.send(editError);
       } else {
-        console.log("COURSE MODIFIED");
         res.send(editResult);
       }
     });
   },
 
-    //DELETE A COURSE FROM THE EQUIVALENCY TABLE
     deleteCourse(req, res) {
       var id = req.body.id;
       pool.query("DELETE FROM course_equivalencies WHERE id = ?", [id], function(deleteError, deleteResult) {
@@ -103,9 +94,9 @@ module.exports = {
       });
     },
 
-
-  //Filtering on Main Program Search Page
-  //Return course equivalencies with GU courses that match filter(s)
+  /*
+    Filtering on Main Program Search Page: Return course equivalencies with GU courses that match filter(s)
+  */
   mainSearch(req, res) {
     var subjects = req.body.subjects;
     var core = req.body.core;
@@ -139,8 +130,9 @@ module.exports = {
     }
   },
 
-  //Filtering on Detail View Page
-  //Return course equivalencies with GU courses that match filter(s)
+  /*
+    Filtering on Detail View Page: Return course equivalencies with GU courses that match filter(s)
+  */
   detailSearch(req, res) {
     var program = req.body.program;
     var subjects = req.body.subjects;

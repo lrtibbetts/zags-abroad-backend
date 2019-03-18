@@ -29,7 +29,6 @@ module.exports = {
     });
   },
 
-  //MY ACCOUNT Courses
   accountCourses(req, res) {
     var email = req.body.email;
     pool.query("SELECT c.id, c.host_program, c.host_course_number, c.host_course_name, c.gu_course_number, c.gu_course_name, c.signature_needed " +
@@ -43,5 +42,21 @@ module.exports = {
           res.send(accResult);
         }
       });
+  },
+
+  /*
+    Get any courses from saved_courses that have been deleted by an admin
+  */
+  getDeletedCourses(req, res) {
+    var email = req.body.email;
+    pool.query("SELECT * FROM saved_courses WHERE email = ? AND course_id NOT IN " +
+    "(SELECT id FROM course_equivalencies)", [email],
+    function(queryError, queryResult) {
+      if(queryError) {
+        res.send(queryError);
+      } else {
+        res.send(queryResult);
+      }
+    });
   }
 };
