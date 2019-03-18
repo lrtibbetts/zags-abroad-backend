@@ -5,7 +5,7 @@ var sendmail = require('sendmail')();
 const saltRounds = 10;
 var verified = false;
 var newToken, mailOptions, host, link, person;
-require('dotenv').config()
+//require('dotenv').config()
 
 module.exports = {
   //this will be used to send emails to the user
