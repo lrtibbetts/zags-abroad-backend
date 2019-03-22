@@ -111,8 +111,8 @@ module.exports = {
         }
       });
     } else {
-      var str = "SELECT c.host_program, c.host_course_name, c.host_course_number, c.gu_course_name, c.gu_course_number, c.signature_needed, c.core" +
-        " FROM course_equivalencies c JOIN programs p WHERE c.host_program = p.host_program AND c.core LIKE '%" + core[0] + ",%'";
+      var str = "SELECT * FROM course_equivalencies c JOIN programs p WHERE " + 
+      "c.host_program = p.host_program AND c.core LIKE '%" + core[0] + ",%'";
       for(var i = 1; i < core.length; i++) {
         str += " OR c.core LIKE '%" + core[i] + ",%'";
       }
