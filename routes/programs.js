@@ -37,6 +37,19 @@ module.exports = {
       });
   },
 
+  // GET APPLICATION LINK
+  getApplicationLink(req, res) {
+    var host_program = req.body.host_program;
+    pool.query("SELECT application_link FROM programs WHERE host_program = ?", [host_program],
+      function(linkError, linkResult) {
+        if(linkError) {
+          res.send(linkError);
+        } else {
+          res.send(linkResult);
+        }
+      });
+  },
+
   // ADD A PROGRAM TO PROGRAM TABLE
   // allows admin to add program to the program table
   addProgram(req, res) {
