@@ -2,7 +2,7 @@ var pool = require('../pool.js');
 
 module.exports = {
   getCourses(req, res) {
-      pool.query("SELECT * FROM course_equivalencies ORDER BY host_program, gu_course_number ASC",
+      pool.query("SELECT * FROM course_equivalencies c JOIN programs p WHERE c.host_program = p.host_program ORDER BY c.host_program, c.gu_course_number ASC",
       function(queryError, queryResult) {
         if(queryError) {
           res.send(queryError);
@@ -101,8 +101,8 @@ module.exports = {
     var subjects = req.body.subjects;
     var core = req.body.core;
     if(core.length === 0) {
-      pool.query("SELECT host_program, host_course_name, host_course_number, gu_course_name, gu_course_number, signature_needed, core" +
-        " FROM course_equivalencies WHERE SUBSTRING(gu_course_number,1,4) IN (?) ORDER BY host_program, gu_course_number ASC",
+      pool.query("SELECT * FROM course_equivalencies c JOIN programs p WHERE " +
+      "c.host_program = p.host_program AND SUBSTRING(c.gu_course_number,1,4) IN (?) ORDER BY c.host_program, c.gu_course_number ASC",
         [subjects, core], function(err, result) {
         if(err) {
           res.send(err);
@@ -111,15 +111,15 @@ module.exports = {
         }
       });
     } else {
-      var str = "SELECT host_program, host_course_name, host_course_number, gu_course_name, gu_course_number, signature_needed, core" +
-        " FROM course_equivalencies WHERE core LIKE '%" + core[0] + ",%'";
+      var str = "SELECT c.host_program, c.host_course_name, c.host_course_number, c.gu_course_name, c.gu_course_number, c.signature_needed, c.core" +
+        " FROM course_equivalencies c JOIN programs p WHERE c.host_program = p.host_program AND c.core LIKE '%" + core[0] + ",%'";
       for(var i = 1; i < core.length; i++) {
-        str += " OR core LIKE '%" + core[i] + ",%'";
+        str += " OR c.core LIKE '%" + core[i] + ",%'";
       }
       if(subjects.length > 0) {
-        str += " OR SUBSTRING(gu_course_number,1,4) IN (?)";
+        str += " OR SUBSTRING(c.gu_course_number,1,4) IN (?)";
       }
-      str += " ORDER BY host_program, gu_course_number ASC";
+      str += " ORDER BY c.host_program, c.gu_course_number ASC";
       pool.query(str, subjects, function(err, result) {
         if(err) {
           res.send(err);
