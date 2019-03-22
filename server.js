@@ -10,9 +10,9 @@ const photos = require('./routes/photos.js');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-//const nodemailer = require('nodemailer');
 
 const app = express();
+
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(cors());
@@ -39,7 +39,6 @@ app.post('/mainsearch', courses.mainSearch);
 app.post('/detailsearch', courses.detailSearch);
 app.post('/login', accounts.logIn);
 app.post('/signup', accounts.signUp);
-app.post('/send', accounts.sendEmail);
 app.get('/verify', accounts.verifyEmail);
 app.get('/accounts', accounts.getAccounts);
 app.post('/grantaccess', accounts.grantAccess);

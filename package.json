@@ -22,7 +22,8 @@
     "nodejs-nodemailer-outlook": "^1.0.8",
     "nodemailer": "^5.1.1",
     "request": "^2.88.0",
-    "should": "^13.2.3"
+    "should": "^13.2.3",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "chai": "^4.2.0",
