@@ -101,8 +101,8 @@ module.exports = {
     var subjects = req.body.subjects;
     var core = req.body.core;
     if(core.length === 0) {
-      pool.query("SELECT * FROM course_equivalencies c JOIN programs p WHERE " +
-      "c.host_program = p.host_program AND SUBSTRING(c.gu_course_number,1,4) IN (?) ORDER BY c.host_program, c.gu_course_number ASC",
+      pool.query("SELECT * FROM course_equivalencies c JOIN programs p ON " +
+      "c.host_program = p.host_program WHERE SUBSTRING(c.gu_course_number,1,4) IN (?) ORDER BY c.host_program, c.gu_course_number ASC",
         [subjects, core], function(err, result) {
         if(err) {
           res.send(err);
@@ -111,8 +111,8 @@ module.exports = {
         }
       });
     } else {
-      var str = "SELECT * FROM course_equivalencies c JOIN programs p WHERE " + 
-      "c.host_program = p.host_program AND c.core LIKE '%" + core[0] + ",%'";
+      var str = "SELECT * FROM course_equivalencies c JOIN programs p ON " +
+      "c.host_program = p.host_program WHERE c.core LIKE '%" + core[0] + ",%'";
       for(var i = 1; i < core.length; i++) {
         str += " OR c.core LIKE '%" + core[i] + ",%'";
       }
