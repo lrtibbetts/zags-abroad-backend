@@ -59,7 +59,7 @@ module.exports = {
                 if(queryError) {
                   res.send(queryError);
                 } else {
-                  res.redirect('https://zagsabroad.herokuapp.com/login');
+                  res.send(queryResult);
                 }
               });
           }
