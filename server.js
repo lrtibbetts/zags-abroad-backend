@@ -41,6 +41,8 @@ app.post('/detailsearch', courses.detailSearch);
 app.post('/login', accounts.logIn);
 app.post('/signup', accounts.signUp);
 app.get('/verify', accounts.verifyEmail);
+app.post('/sendreset', accounts.sendResetEmail);
+app.post('/reset', accounts.resetPassword);
 app.get('/accounts', accounts.getAccounts);
 app.post('/grantaccess', accounts.grantAccess);
 app.post('/removeaccess', accounts.removeAccess);
