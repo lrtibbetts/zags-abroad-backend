@@ -74,5 +74,20 @@ module.exports = {
         res.send(result);
       }
     });
+  },
+
+  prepopulatePhotos(req, res) {
+    var program = req.body.host_program;
+    console.log(program);
+    pool.query("SELECT * FROM photos where program = ?", [program], function(err, result) {
+      if(err) {
+
+        res.send(err);
+        console.log(err);
+      } else {
+
+        res.send(result);
+      }
+    })
   }
 }

@@ -60,6 +60,7 @@ app.post('/programphotos', photos.getProgramPhotos);
 app.post('/approvephoto', photos.approvePhoto);
 app.post('/deletephoto', photos.deletePhoto);
 app.post('/adminphotos', photos.adminDefaultPhotos);
+app.post('/populatedropzone', photos.prepopulatePhotos);
 
 app.listen(port, function() {
     console.log('Listening on port ' + port);

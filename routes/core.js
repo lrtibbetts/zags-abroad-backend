@@ -13,6 +13,10 @@ module.exports = {
     });
   },
 
+  //this returns a list of core designations for a specific
+  //program Name
+  //ex: akita unistersity only has 4 different cor
+  //designations
   programCore(req, res) {
     var program = req.body.program;
     pool.query("SELECT DISTINCT c.core_name FROM core_designations c JOIN course_equivalencies e" +
