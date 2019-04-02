@@ -6,13 +6,74 @@ require('dotenv').config();
 const uuidv1 = require('uuid/v1');
 
 module.exports = {
+  sendResetEmail(req, res) {
+    var email = req.body.email;
+    var smtpTransport = nodemailer.createTransport({
+      service: "Gmail",
+      auth: {
+        user: process.env.EMAIL,
+        pass: process.env.PASS,
+      }
+    });
+    var token = uuidv1();
+    // TODO: Change url before pushing
+    var link = "https://zagsabroad.herokuapp.com/reset/" + token;
+    var mailOptions = {
+      from: "zagsabroad@gmail.com",
+      to: email,
+      subject: "Reset your password with Zags Abroad",
+      html: "Hello, </br> Please click on the link below to reset your password. </br> <a href="
+      + link + ">Click here to reset your password</a>"
+    };
+    pool.query("UPDATE accounts SET token = ? WHERE email = ?", [token, email], function(error, result) {
+      if (error) {
+        res.send(error);
+      } else if(result.affectedRows === 0) {
+        res.send("Account does not exist");
+      } else {
+        smtpTransport.sendMail(mailOptions, function(error, info) {
+          if (error) {
+            res.send({sent: false});
+          } else {
+            res.send({sent: true});
+          }
+        });
+      }
+    });
+  },
+
+  resetPassword(req, res) {
+    var token = req.body.token;
+    var password = req.body.password;
+    pool.query("SELECT email FROM accounts WHERE token = ?", [token], function(error, result) {
+      if (error) {
+        res.send(error);
+      } else {
+        var email = result[0].email;
+        // Hash new password
+        bcrypt.hash(password, saltRounds, function(hashError, hash) {
+          if (hashError) {
+            console.log(hashError);
+          } else {
+            pool.query("UPDATE accounts SET password = ? WHERE email = ?", [hash, email], function(queryError, queryResult) {
+                if(queryError) {
+                  res.send(queryError);
+                } else {
+                  res.send(queryResult);
+                }
+              });
+          }
+        });
+      }
+    });
+  },
+
   verifyEmail(req,res) {
     var token = req.query.id;
     pool.query("SELECT email FROM accounts WHERE token = ?", [token], function(error, result) {
       if (error) {
         res.send(error);
       } else {
-        console.log(result);
         var email = result[0].email;
         pool.query("UPDATE accounts SET is_verified = 1 WHERE email = ?", [email], function(error, result) {
           if (error) {
@@ -119,10 +180,8 @@ module.exports = {
     pool.query("SELECT * FROM accounts WHERE email like '%@g%' and email != 'lombardi@gonzaga.edu'", function(error, result) {
       if (error) {
         res.send(error);
-        console.log("No @gonzaga.edu accounts found");
       } else {
         res.send(result);
-        console.log("Here are the possible admin accounts");
       }
     })
   },
@@ -132,10 +191,8 @@ module.exports = {
     pool.query("UPDATE accounts SET is_admin = 1 WHERE email = ?", [email], function(error, result) {
       if (error) {
         res.send(error);
-        console.log("Error")
       } else {
         res.send(result);
-        console.log("Admin access granted to " + email);
       }
     })
   },
@@ -145,10 +202,8 @@ module.exports = {
     pool.query("UPDATE accounts set is_admin = 0 WHERE email = ? ", [email], function(error, result) {
       if(error) {
         res.send(error);
-        console.log("No change in admin privledge");
       } else {
         res.send(error);
-        console.log("Now " + email + " has no admin access");
       }
     })
   }
