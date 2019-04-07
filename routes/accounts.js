@@ -16,7 +16,6 @@ module.exports = {
       }
     });
     var token = uuidv1();
-    // TODO: Change url before pushing
     var link = "https://zagsabroad.herokuapp.com/reset/" + token;
     var mailOptions = {
       from: "zagsabroad@gmail.com",
