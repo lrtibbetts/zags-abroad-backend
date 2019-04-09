@@ -1,4 +1,5 @@
 var pool = require('../pool.js');
+require('dotenv').config();
 
 module.exports = {
   //GET ALL CORE DESIGNATIONS

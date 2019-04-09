@@ -9,16 +9,16 @@ module.exports = {
   sendResetEmail(req, res) {
     var email = req.body.email;
     var smtpTransport = nodemailer.createTransport({
-      service: "Gmail",
+      service: process.env.ACCOUNT_SERVICE,
       auth: {
-        user: process.env.EMAIL,
-        pass: process.env.PASS,
+        user: process.env.ACCOUNT_EMAIL,
+        pass: process.env.ACCOUNT_PASS,
       }
     });
     var token = uuidv1();
     var link = "https://zagsabroad.herokuapp.com/reset/" + token;
     var mailOptions = {
-      from: "zagsabroad@gmail.com",
+      from: process.env.ACCOUNT_EMAIL,
       to: email,
       subject: "Reset your password with Zags Abroad",
       html: "Hello, </br> Please click on the link below to reset your password. </br> <a href="
@@ -97,17 +97,17 @@ module.exports = {
     var password = req.body.password;
     var admin = 0
     var smtpTransport = nodemailer.createTransport({
-      service: "Gmail",
+      service: process.env.ACCOUNT_SERVICE,
       auth: {
-        user: process.env.EMAIL,
-        pass: process.env.PASS,
+        user: process.env.ACCOUNT_EMAIL,
+        pass: process.env.ACCOUNT_PASS,
       }
     });
     // Generate UUID as unique token
     var token = uuidv1();
     var link = "https://" + req.get('host') + "/verify?id=" + token;
     var mailOptions = {
-      from: "zagsabroad@gmail.com",
+      from: process.env.ACCOUNT_EMAIL,
       to: email,
       subject: "Verify your account with Zags Abroad",
       html: "Hello, </br> Please click on the link below to verify your email. </br> <a href="
