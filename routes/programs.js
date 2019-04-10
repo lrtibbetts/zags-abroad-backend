@@ -104,10 +104,10 @@ module.exports = {
         res.send("Program does not exist");
       } else {
         res.send(deleteResult);
-        deleteCourses(req, res);
+        //deleteCourses(req, res);
       }
     });
-  },
+  }/*,
 
   //DELETE COURSES FROM EQUIVALENCY TABLE OF A REMOVED PROGRAM FROM THE PROGRAM TABLE
   deleteCourses(req, res) {
@@ -122,5 +122,5 @@ module.exports = {
         res.send(deleteCourseResult);
       }
     });
-  }
+  }*/
 };
