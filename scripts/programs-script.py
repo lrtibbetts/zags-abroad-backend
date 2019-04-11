@@ -21,8 +21,8 @@ query = """INSERT INTO programs(host_program, program_type, application_link, ci
 
 for r in range(1, sheet.nrows):
     host_program = sheet.cell(r,0).value
-    program_type = "Semester"
-    application_link = ""
+    program_type = sheet.cell(r,1).value
+    application_link = sheet.cell(r,2).value
     city = sheet.cell(r, 3).value
     lat = sheet.cell(r, 4).value
     lng = sheet.cell(r, 5).value

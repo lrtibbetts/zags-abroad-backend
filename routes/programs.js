@@ -71,7 +71,7 @@ module.exports = {
     });
   },
 
-  //EDIT A COURSE IN THE EQUIVALENCY TABLE
+  //EDIT A PROGRAM IN THE PROGRAM TABLE
   editProgram(req, res) {
     var host_program = req.body.host_program;
     var program_type = req.body.program_type;
@@ -93,7 +93,7 @@ module.exports = {
     });
   },
 
-  //DELETE A COURSE FROM THE EQUIVALENCY TABLE
+  //DELETE A PROGRAM FROM THE PROGRAM TABLE
   deleteProgram(req, res) {
     var host_program = req.body.host_program;
     pool.query("DELETE FROM programs WHERE host_program = ?", [host_program],
@@ -104,7 +104,23 @@ module.exports = {
         res.send("Program does not exist");
       } else {
         res.send(deleteResult);
+        //deleteCourses(req, res);
       }
     });
-  }
+  }/*,
+
+  //DELETE COURSES FROM EQUIVALENCY TABLE OF A REMOVED PROGRAM FROM THE PROGRAM TABLE
+  deleteCourses(req, res) {
+    var host_program = req.body.host_program;
+    pool.query("DELETE FROM course_equivalencies WHERE host_program = ?", [host_program],
+    function(deleteCourseError, deleteCourseResult) {
+      if(deleteCourseError) {
+        res.send(deleteCourseError);
+      } else if (deleteCourseResult.affectedRows === 0) {
+        res.send("No courses for this program");
+      } else {
+        res.send(deleteCourseResult);
+      }
+    });
+  }*/
 };
