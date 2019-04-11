@@ -47,7 +47,6 @@ for r in range(1, sheet.nrows):
     gu_course_number, gu_course_name, core, comments, signature_needed, approved_by, approval_date, approved_until, department)
 
     cursor.execute(query, values)
-    print(values)
 
 cursor.close()
 connection.commit()
