@@ -32,6 +32,7 @@ app.post('/editprogram', programs.editProgram);
 app.post('/deleteprogram', programs.deleteProgram);
 app.get('/departments', departments.getDepartments);
 app.get('/courses', courses.getCourses);
+app.get('/admincourses', courses.getAdminCourses);
 app.post('/programcourses', courses.programCourses);
 app.post('/addcourse', courses.addCourse);
 app.post('/editcourse', courses.editCourse);

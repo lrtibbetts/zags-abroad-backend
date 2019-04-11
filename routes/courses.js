@@ -13,6 +13,17 @@ module.exports = {
       });
   },
 
+  getAdminCourses(req, res) {
+      pool.query("SELECT * FROM course_equivalencies ORDER BY host_program, gu_course_number ASC",
+      function(queryError, queryResult) {
+        if(queryError) {
+          res.send(queryError);
+        } else {
+          res.send(queryResult);
+        }
+      });
+  },
+
   /*
     Get courses for a specific study abroad program
   */
@@ -82,18 +93,18 @@ module.exports = {
     });
   },
 
-    deleteCourse(req, res) {
-      var id = req.body.id;
-      pool.query("DELETE FROM course_equivalencies WHERE id = ?", [id], function(deleteError, deleteResult) {
-        if(deleteError) {
-          res.send(deleteError);
-        } else if(deleteResult.affectedRows === 0) {
-          res.send("Course does not exist");
-        } else {
-          res.send(deleteResult);
-        }
-      });
-    },
+  deleteCourse(req, res) {
+    var id = req.body.id;
+    pool.query("DELETE FROM course_equivalencies WHERE id = ?", [id], function(deleteError, deleteResult) {
+      if(deleteError) {
+        res.send(deleteError);
+      } else if(deleteResult.affectedRows === 0) {
+        res.send("Course does not exist");
+      } else {
+        res.send(deleteResult);
+      }
+    });
+  },
 
     /*deleteProgramCourses(req, res) {
       var host_program = req.body.host_program;
