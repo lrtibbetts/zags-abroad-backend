@@ -55,13 +55,12 @@ module.exports = {
   addProgram(req, res) {
     var host_program = req.body.host_program;
     var program_type = req.body.program_type;
-    var host_url = req.body.host_url;
     var application_link = req.body.application_link;
     var city = req.body.city;
     var lat = req.body.lat;
     var lng = req.body.lng;
-    pool.query("INSERT INTO programs (host_program, program_type, host_url, application_link, city, lat, lng) VALUES (?,?,?,?,?,?,?)",
-    [host_program, program_type, host_url, application_link, city, lat, lng],
+    pool.query("INSERT INTO programs (host_program, program_type, application_link, city, lat, lng) VALUES (?,?,?,?,?,?)",
+    [host_program, program_type, application_link, city, lat, lng],
     function(addError, addResult) {
       if(addError) {
         res.send(addError);
@@ -75,15 +74,14 @@ module.exports = {
   editProgram(req, res) {
     var host_program = req.body.host_program;
     var program_type = req.body.program_type;
-    var host_url = req.body.host_url;
     var application_link = req.body.application_link;
     var city = req.body.city;
     var orig_host_program = req.body.orig_host_program;
     var lat = req.body.lat;
     var lng = req.body.lng;
-    pool.query("UPDATE programs SET host_program = ?, program_type = ?, host_url = ?," +
+    pool.query("UPDATE programs SET host_program = ?, program_type = ?," +
     " application_link = ?, city = ?, lat = ?, lng = ? WHERE host_program = ?",
-    [host_program, program_type, host_url, application_link, city, lat, lng, orig_host_program],
+    [host_program, program_type, application_link, city, lat, lng, orig_host_program],
     function(editError, editResult) {
       if(editError) {
         res.send(editError);
@@ -103,24 +101,17 @@ module.exports = {
       } else if(deleteResult.affectedRows === 0) {
         res.send("Program does not exist");
       } else {
-        res.send(deleteResult);
-        //deleteCourses(req, res);
+        // Delete corresponding courses
+        pool.query("DELETE FROM course_equivalencies WHERE host_program = ?", [host_program],
+        function(deleteCoursesError, deleteCoursesResult) {
+          if(deleteCoursesError) {
+            res.send(deleteCoursesError);
+          } else {
+            res.send(deleteCoursesResult);
+          }
+        });
       }
     });
-  }/*,
+  }
 
-  //DELETE COURSES FROM EQUIVALENCY TABLE OF A REMOVED PROGRAM FROM THE PROGRAM TABLE
-  deleteCourses(req, res) {
-    var host_program = req.body.host_program;
-    pool.query("DELETE FROM course_equivalencies WHERE host_program = ?", [host_program],
-    function(deleteCourseError, deleteCourseResult) {
-      if(deleteCourseError) {
-        res.send(deleteCourseError);
-      } else if (deleteCourseResult.affectedRows === 0) {
-        res.send("No courses for this program");
-      } else {
-        res.send(deleteCourseResult);
-      }
-    });
-  }*/
 };
