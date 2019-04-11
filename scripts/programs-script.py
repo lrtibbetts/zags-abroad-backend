@@ -30,7 +30,6 @@ for r in range(1, sheet.nrows):
     values = (host_program, program_type, application_link, city, lat, lng)
 
     cursor.execute(query, values)
-    print(values)
 
 cursor.close()
 connection.commit()
