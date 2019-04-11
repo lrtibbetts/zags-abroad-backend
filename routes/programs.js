@@ -101,16 +101,15 @@ module.exports = {
       } else if(deleteResult.affectedRows === 0) {
         res.send("Program does not exist");
       } else {
-        /*pool.query("DELETE FROM course_equivalencies WHERE host_program = ?", [host_program], function(deleteCourseError, deleteCourseResult) {
-          if(deleteCourseError) {
-            res.send(deleteCourseError);
-          } else if(deleteCourseResult.affectedRows === 0) {
-            res.send("Program courses do not exist");
+        // Delete corresponding courses
+        pool.query("DELETE FROM course_equivalencies WHERE host_program = ?", [host_program],
+        function(deleteCoursesError, deleteCoursesResult) {
+          if(deleteCoursesError) {
+            res.send(deleteCoursesError);
           } else {
-            console.log("Program courses deleted successfully");
+            res.send(deleteCoursesResult);
           }
-        });*/
-        //res.send(deleteResult);
+        });
       }
     });
   }
