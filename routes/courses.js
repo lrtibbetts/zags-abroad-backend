@@ -95,6 +95,19 @@ module.exports = {
       });
     },
 
+    /*deleteProgramCourses(req, res) {
+      var host_program = req.body.host_program;
+      pool.query("DELETE FROM course_equivalencies WHERE host_program = ?", [host_program], function(deleteError, deleteResult) {
+        if(deleteError) {
+          res.send(deleteError);
+        } else if(deleteResult.affectedRows === 0) {
+          res.send("Program courses do not exist");
+        } else {
+          res.send(deleteResult);
+        }
+      });
+    // },*
+
   /*
     Filtering on Main Program Search Page: Return course equivalencies with GU courses that match filter(s)
   */

@@ -36,6 +36,7 @@ app.post('/programcourses', courses.programCourses);
 app.post('/addcourse', courses.addCourse);
 app.post('/editcourse', courses.editCourse);
 app.post('/deletecourse', courses.deleteCourse);
+//app.post('/deleteprogramcourses', courses.deleteProgramCourses);
 app.post('/mainsearch', courses.mainSearch);
 app.post('/detailsearch', courses.detailSearch);
 app.post('/login', accounts.logIn);
