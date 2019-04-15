@@ -22,7 +22,7 @@ module.exports = {
       to: email,
       subject: "Reset your password with Zags Abroad",
       html: "Hello, </br> Please click on the link below to reset your password. </br> <a href="
-      + link + ">Click here to reset your password</a>"
+      + link + ">Click here to reset your password</a>. </br> </br> P.S. If the link above does not work, copy and paste the link into your search bar :) </br> </br> Thank you for using Zags Abroad! "
     };
     pool.query("UPDATE accounts SET token = ? WHERE email = ?", [token, email], function(error, result) {
       if (error) {
@@ -111,7 +111,7 @@ module.exports = {
       to: email,
       subject: "Verify your account with Zags Abroad",
       html: "Hello, </br> Please click on the link below to verify your email. </br> <a href="
-      + link + ">Click here to verify</a>"
+      + link + ">Click here to verify</a>. </br> </br> p.s. If the link above does not work, copy and paste the link into your search bar :) </br> </br> Thank you for using Zags Abroad!  "
     };
     // https://www.abeautifulsite.net/hashing-passwords-with-nodejs-and-bcrypt
     bcrypt.hash(password, saltRounds, function(hashError, hash) {
