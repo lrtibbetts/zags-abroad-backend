@@ -1,7 +1,7 @@
 var pool = require('../pool.js');
 
 module.exports = {
-  //GET ALL DEPARTMENTS
+  /* Get all departments */
   getDepartments(req, res) {
     pool.query("SELECT dept_code FROM departments ORDER BY dept_code ASC",
       function(deptError, deptResult) {

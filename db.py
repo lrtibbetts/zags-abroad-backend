@@ -1,20 +1,19 @@
-#this file is made to recreate our database when we switch to a new server
+# This file can be used to recreate our database when we switch to a new server
 
-#imported libraries
 import pymysql
 from pymysql import cursors
 
-#making a connection to the destination db
+# Making a connection to the destination db
 db = pymysql.connect(
   user = "root",
   password = "pass1234",
   db = "mysql"
 )
 
-#creating cursor for the tables
+# Creating cursor for the tables
 cur = db.cursor()
 
-#creating the tables (queries)
+# Creating the tables
 account_table = """CREATE TABLE IF NOT EXISTS accounts(
     email VARCHAR(50) NOT NULL,
     first_name VARCHAR(50),
@@ -103,15 +102,15 @@ survey_table = """CREATE TABLE IF NOT EXISTS survey(
     PRIMARY KEY(ID)
   )"""
 
-#list of all the queries
+# List of all the queries
 commands = [account_table, core_table, course_table, department_table, photo_table, program_table, saved_table, subject_table, survey_table]
 
-#loop to create all the tables in the new db
+# loop to create all the tables in the new db
 for item in commands:
     cur.execute(item)
     db.commit()
     print(item + " was added to the database")
 
-#close the connection
+# Close the connection
 cur.close()
 db.close()

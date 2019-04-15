@@ -2,7 +2,7 @@ var pool = require('../pool.js');
 require('dotenv').config();
 
 module.exports = {
-  //GET ALL CORE DESIGNATIONS
+  /* Get all core designations */
   getCore(req, res) {
     pool.query("SELECT * FROM core_designations ORDER BY core_name ASC", function(coreError, coreResult) {
       if(coreError) {
@@ -14,10 +14,7 @@ module.exports = {
     });
   },
 
-  //this returns a list of core designations for a specific
-  //program Name
-  //ex: akita unistersity only has 4 different cor
-  //designations
+  /* Get core designations for a specific program */
   programCore(req, res) {
     var program = req.body.program;
     pool.query("SELECT DISTINCT c.core_name FROM core_designations c JOIN course_equivalencies e" +
