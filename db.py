@@ -83,6 +83,7 @@ subject_table = """CREATE TABLE IF NOT EXISTS subjects(
   subject_code VARCHAR(20),
   subject_name VARCHAR(75)
 )"""
+
 survey_table = """CREATE TABLE IF NOT EXISTS survey(
     ID INT(11) NOT NULL AUTO_INCREMENT,
     name VARCHAR(100),
