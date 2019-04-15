@@ -31,7 +31,7 @@ module.exports = {
     });
   },
 
-  // Get approved surveys for a program
+  /* Get approved surveys for a program */
   programSurveys(req, res) {
     var program = req.body.program;
     pool.query("SELECT * FROM survey WHERE program = ? AND approved = 1", [program],

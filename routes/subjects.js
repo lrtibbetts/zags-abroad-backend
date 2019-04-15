@@ -1,8 +1,7 @@
 var pool = require('../pool.js');
 
 module.exports = {
-  //GET ALL SUBJECTS
-  //no filters applied
+  /* Get all subjects */
   getSubjects(req, res) {
     pool.query("SELECT subject_code, subject_name FROM subjects ORDER BY subject_name ASC",
       function(subjError, subjResult) {
@@ -15,7 +14,7 @@ module.exports = {
       });
   },
 
-  //GET SUBJECTS OF A PROGRAM 
+  /* Get subjects for a specific program */
   programSubjects(req, res) {
     var program = req.body.program;
     pool.query("SELECT DISTINCT s.subject_name, s.subject_code FROM subjects s JOIN course_equivalencies c " +

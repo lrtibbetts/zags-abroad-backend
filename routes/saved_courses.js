@@ -1,7 +1,7 @@
 var pool = require('../pool.js');
 
 module.exports = {
-  //SAVE COURSE
+  /* Save course to a user account */
   saveCourse(req, res) {
     var email = req.body.email;
     var course_id = req.body.course_id;

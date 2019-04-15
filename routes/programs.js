@@ -1,7 +1,7 @@
 var pool = require('../pool.js');
 
 module.exports = {
-  //GET ALL PROGRAMS
+  /* Get all program names */
   getPrograms(req, res) {
     pool.query("SELECT host_program FROM programs ORDER BY host_program ASC",
       function(programError, programResult) {
@@ -13,7 +13,7 @@ module.exports = {
       });
   },
 
-  // GET PROGRAM INFOMRATION TO POPULATE ADMIN MANAGEMENT PAGE
+  /* Get all program details (used on admin program management page)*/
   getAdminPrograms(req, res){
     pool.query("SELECT * FROM programs ORDER BY host_program ASC",
       function(programError, programResult) {
@@ -25,7 +25,7 @@ module.exports = {
       });
   },
 
-  // GET LOCATIONS for MapView
+  /* Get locations for map view */
   getLocations(req, res) {
     pool.query("SELECT host_program, city, lat, lng FROM programs",
       function(locationError, locationResult) {
@@ -37,7 +37,7 @@ module.exports = {
       });
   },
 
-  // GET APPLICATION LINK
+  /* Get application link for a given program */
   getApplicationLink(req, res) {
     var host_program = req.body.host_program;
     pool.query("SELECT application_link FROM programs WHERE host_program = ?", [host_program],
@@ -50,8 +50,7 @@ module.exports = {
       });
   },
 
-  // ADD A PROGRAM TO PROGRAM TABLE
-  // allows admin to add program to the program table
+  /* Add a new program */
   addProgram(req, res) {
     var host_program = req.body.host_program;
     var program_type = req.body.program_type;
@@ -70,7 +69,7 @@ module.exports = {
     });
   },
 
-  //EDIT A PROGRAM IN THE PROGRAM TABLE
+  /* Update a program */
   editProgram(req, res) {
     var host_program = req.body.host_program;
     var program_type = req.body.program_type;
@@ -91,7 +90,7 @@ module.exports = {
     });
   },
 
-  //DELETE A PROGRAM FROM THE PROGRAM TABLE
+  /* Delete a program */
   deleteProgram(req, res) {
     var host_program = req.body.host_program;
     pool.query("DELETE FROM programs WHERE host_program = ?", [host_program],
