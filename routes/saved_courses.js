@@ -1,7 +1,7 @@
 var pool = require('../pool.js');
 
 module.exports = {
-  /* Save course to a user account */
+  //SAVE COURSE
   saveCourse(req, res) {
     var email = req.body.email;
     var course_id = req.body.course_id;
@@ -31,8 +31,8 @@ module.exports = {
 
   accountCourses(req, res) {
     var email = req.body.email;
-    pool.query("SELECT c.id, c.host_program, c.host_course_number, c.host_course_name, c.gu_course_number, c.gu_course_name, c.signature_needed " +
-    "FROM course_equivalencies c JOIN saved_courses s WHERE s.email = ? AND c.id = s.course_id ORDER BY c.host_program ASC", [email],
+    pool.query("SELECT c.id, p.city, c.host_program, c.host_course_number, c.host_course_name, c.gu_course_number, c.gu_course_name, c.signature_needed " +
+    "FROM course_equivalencies c JOIN programs p ON c.host_program = p.host_program JOIN saved_courses s ON c.id = s.course_id WHERE s.email = ?  ORDER BY c.host_program ASC", [email],
       function(accError, accResult) {
         if(accError) {
           console.log("Cannot access account");
